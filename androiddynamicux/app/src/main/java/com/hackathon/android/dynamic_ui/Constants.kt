@@ -13,14 +13,16 @@ object Constants {
 
     interface Element {
         companion object {
-            const val COLUMN = "column"
-            const val ROW = "row"
+            const val COLUMN = "vContainer"
+            const val ROW = "hContainer"
             const val LABEL = "label"
-            const val TEXT = "text"
-            const val FULL_WIDTH_TEXT = "full-width-text"
+            const val IMAGE = "image"
+//            const val TEXT = "text"
+//            const val FULL_WIDTH_TEXT = "full-width-text"
             const val BUTTON = "button"
-            const val LIST_COLUMN = "list-column"
-            const val LIST_ROW = "list-row"
+            const val SELECTION_PICKER = "selectionPicker"
+//            const val LIST_COLUMN = "list-column"
+//            const val LIST_ROW = "list-row"
         }
     }
 }

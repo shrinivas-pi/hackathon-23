@@ -1,0 +1,55 @@
+package com.hackathon.android.dynamic_ui
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
+import com.hackathon.android.dynamic_ui.ui.theme.AndroiddynamicuxTheme
+
+class HomeActivity : ComponentActivity() {
+
+    private var json: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        json = getJsonDataFromAsset(context = applicationContext, fileName = "home.json")
+        setContent {
+            AndroiddynamicuxTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val uiElement: UiElement =
+                        Gson().fromJson(json, object : TypeToken<UiElement>() {}.type)
+                    BuildView(element = uiElement)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Greeting2(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    AndroiddynamicuxTheme {
+        Greeting2("Android")
+    }
+}

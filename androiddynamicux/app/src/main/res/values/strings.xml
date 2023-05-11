@@ -2,4 +2,5 @@
     <string name="app_name">android-dynamic-ux</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>
