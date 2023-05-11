@@ -1,0 +1,216 @@
+{
+  "id": "screen",
+  "type": "vContainer",
+  "children": [
+    {
+      "id": "searchForm",
+      "type": "vContainer",
+      "children": [
+        {
+          "id": "maps",
+          "type": "image",
+          "link": "",
+          "properties": {
+            "isTapabble": true,
+            "isNetworkLoadable": false,
+            "size": {
+              "width": 20.0,
+              "height": 20.0
+            }
+          }
+        },
+        {
+          "id": "locationPicker",
+          "type": "selectionPicker",
+          "placeHolder": "Choose a location",
+          "leftIcon": {
+            "id": "searchIcon",
+            "type": "image",
+            "link": "",
+            "properties": {
+              "isTapabble": true,
+              "isNetworkLoadable": false
+            }
+          },
+          "rightIcon": {
+            "id": "locationIcon",
+            "type": "image",
+            "link": "",
+            "properties": {
+              "isTapabble": true,
+              "isNetworkLoadable": false
+            }
+          },
+          "properties": {
+            "isTapabble": true,
+            "font": {
+              "size": 16,
+              "type": "normal"
+            },
+            "foregroundColor": "#094859",
+            "backgroundColor": "#958489",
+            "padding": {
+              "left": 16,
+              "right": 16,
+              "top": 16,
+              "bottom": 16
+            },
+            "radius": 8
+          }
+        },
+        {
+          "id": "datePicker",
+          "type": "selectionPicker",
+          "placeHolder": "Choose a date",
+          "leftIcon": {
+            "id": "calendarIcon",
+            "type": "image",
+            "link": "",
+            "properties": {
+              "isTapabble": true,
+              "isNetworkLoadable": false
+            }
+          },
+          "properties": {
+            "isTapabble": true,
+            "font": {
+              "size": 16,
+              "type": "normal"
+            },
+            "foregroundColor": "#094859",
+            "backgroundColor": "#958489",
+            "padding": {
+              "left": 16,
+              "right": 16,
+              "top": 16,
+              "bottom": 16
+            },
+            "radius": 8
+          }
+        },
+        {
+          "id": "searchButton",
+          "type": "button",
+          "title": "Search Hotels",
+          "properties": {
+            "isTapabble": true,
+            "font": {
+              "size": 16,
+              "type": "normal"
+            },
+            "foregroundColor": "#FFFFFF",
+            "backgroundColor": "#958489",
+            "padding": {
+              "left": 16,
+              "right": 16,
+              "top": 16,
+              "bottom": 16
+            },
+            "radius": 8
+          }
+        }
+      ],
+      "properties": {
+        "backgroundColor": "#958489",
+        "padding": {
+          "left": 16,
+          "right": 16,
+          "top": 16,
+          "bottom": 16
+        },
+        "radius": 8
+      }
+    },
+    {
+      "id": "vipBanner",
+      "type": "hContainer",
+      "children": [
+        {
+          "id": "vipTierImage",
+          "type": "image",
+          "link": "tierImage",
+          "properties": {
+            "isTapabble": false,
+            "isNetworkLoadable": false
+          }
+        },
+        {
+          "id": "details",
+          "type": "vContainer",
+          "children": [
+            {
+              "id": "vipBannerTitle",
+              "type": "text",
+              "text": "Become a priceline VIP",
+              "properties": {
+                "font": {
+                  "size": 14,
+                  "type": "bold"
+                },
+                "foregroundColor": "#000000",
+                "padding": {
+                  "left": 16,
+                  "right": 16,
+                  "top": 16,
+                  "bottom": 4
+                }
+              }
+            },
+            {
+              "id": "vipBannerDetail",
+              "type": "text",
+              "text": "Login or signup for free to unlock incredible deals and benefits.",
+              "properties": {
+                "font": {
+                  "size": 14,
+                  "type": "bold"
+                },
+                "foregroundColor": "#000000",
+                "padding": {
+                  "left": 16,
+                  "right": 16,
+                  "top": 4,
+                  "bottom": 16
+                }
+              }
+            },
+            {
+              "id": "loginButton",
+              "type": "button",
+              "title": "Sign Up",
+              "properties": {
+                "deeplink": "pclnnegotiator://signup",
+                "isTapabble": true,
+                "font": {
+                  "size": 16,
+                  "type": "normal"
+                },
+                "foregroundColor": "#958489"
+              }
+            }
+          ],
+          "properties": {
+            "isTapabble": false,
+            "isNetworkLoadable": false
+          }
+        }
+      ],
+      "properties": {
+        "isTapabble": true,
+        "isNetworkLoadable": false,
+        "backgroundColor": "#FFFFFF",
+        "radius": 8,
+        "padding": {
+          "top": 8,
+          "bottom": 8,
+          "left": 8,
+          "right": 8
+        }
+      }
+    }
+  ],
+  "properties": {
+    "scrollEnabled": true,
+    "isTapabble": true
+  }
+}
