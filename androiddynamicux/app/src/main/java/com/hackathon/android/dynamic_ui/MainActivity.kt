@@ -412,7 +412,8 @@ fun BuildColumnView(element: UiElement, renderType: Constants.RenderType? = null
                 top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
                 end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
                 bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
-            )
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             element.children?.forEach { BuildView(it) }
         }
