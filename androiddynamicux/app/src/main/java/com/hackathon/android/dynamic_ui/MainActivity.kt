@@ -8,13 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -24,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -34,6 +29,7 @@ import java.io.IOException
 
 private const val DEFAULT_IMAGE_HEIGHT = 160
 private const val DEFAULT_IMAGE_WIDTH = 160
+private const val DEFAULT_BUTTON_HEIGHT = 50
 private const val DEFAULT_PADDING = 0
 
 class MainActivity : ComponentActivity() {
@@ -63,13 +59,13 @@ class MainActivity : ComponentActivity() {
 //LIST, IMAGE_VIEW,
 @Composable
 fun BuildView(element: UiElement) = when (element.type) {
-    Constants.Element.COLUMN -> BuildColumnView(element = element)
-    Constants.Element.ROW -> BuildRowView(element = element)
-    Constants.Element.LABEL -> BuildLabelView(element = element)
-    Constants.Element.IMAGE -> BuildImageView(element = element)
+    Constants.Element.COLUMN.id -> BuildColumnView(element = element)
+    Constants.Element.ROW.id -> BuildRowView(element = element)
+    Constants.Element.LABEL.id -> BuildLabelView(element = element)
+    Constants.Element.IMAGE.id -> BuildImageView(element = element)
 //    Constants.Element.TEXT -> BuildTextView(element = element)
 //    Constants.Element.FULL_WIDTH_TEXT -> BuildFullWidthTextView(element = element)
-    Constants.Element.BUTTON -> BuildButtonView(element = element)
+    Constants.Element.BUTTON.id -> BuildButtonView(element = element)
 //    Constants.Element.LIST_COLUMN -> data?.let { BuildListColumnView(element = element, data = it) }
 //    Constants.Element.LIST_ROW -> data?.let { BuildListRowView(element = element, data = it) }
     else -> {}//TODO("add other element cases here")
@@ -77,9 +73,12 @@ fun BuildView(element: UiElement) = when (element.type) {
 
 @Composable
 fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
+    val mContext = LocalContext.current
     Button(
-        modifier = modifier.fillMaxWidth(),
-        onClick = { /*TODO*/ }
+        modifier = getModifier(modifier, element, Constants.Element.BUTTON),
+        onClick = {
+            performClick(mContext, element.properties?.isTapabble, element.id)
+        }
     ) {
         element.title?.let { Text(text = it) }
     }
@@ -200,7 +199,7 @@ fun BuildLabelView(element: UiElement) {
 }
 
 @Composable
-fun BuildImageView(element: UiElement) {
+fun BuildImageView(element: UiElement, modifier: Modifier = Modifier) {
     val mContext = LocalContext.current
     element.link.takeIf { it?.isNotBlank() == true }?.let {
         val image =
@@ -208,7 +207,8 @@ fun BuildImageView(element: UiElement) {
                 rememberAsyncImagePainter(element.link)
             } else {
                 rememberDrawablePainter(element.link?.let { it1 ->
-                    getAssetResourceId(mContext,
+                    getAssetResourceId(
+                        mContext,
                         it1
                     )
                 })
@@ -216,18 +216,44 @@ fun BuildImageView(element: UiElement) {
         Image(
             painter = image,
             contentDescription = null,
-            modifier = Modifier
-                .size(
-                    height = element.properties?.size?.height?.dp ?: DEFAULT_IMAGE_HEIGHT.dp,
-                    width = element.properties?.size?.width?.dp ?: DEFAULT_IMAGE_WIDTH.dp
-                )
-                .clickable {
-                    if (element.properties?.isTapabble == true)
-                        element.id?.let { it1 -> performClick(mContext, it1) }
-                },
+            modifier = getModifier(modifier, element, Constants.Element.IMAGE).clickable {
+                performClick(mContext, element.properties?.isTapabble, element.id)
+            },
         )
     }
 }
+
+fun getModifier(
+    modifier: Modifier,
+    element: UiElement,
+    type: Constants.Element,
+): Modifier = (element.properties?.size?.width?.let {
+    modifier.size(
+        height = getHeightByType(type, element.properties.size.height?.dp),
+        width = it.dp
+    )
+} ?: modifier
+    .fillMaxWidth(
+    )
+    .height(getHeightByType(type, element.properties?.size?.height?.dp))).padding(
+    start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+    top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+    end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+    bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+)
+
+
+fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
+    propertiesHeight
+        ?: when (type) {
+            is Constants.Element.COLUMN -> DEFAULT_BUTTON_HEIGHT.dp
+            is Constants.Element.IMAGE -> DEFAULT_IMAGE_HEIGHT.dp
+            is Constants.Element.BUTTON -> DEFAULT_BUTTON_HEIGHT.dp
+            is Constants.Element.ROW -> DEFAULT_BUTTON_HEIGHT.dp
+            is Constants.Element.LABEL -> DEFAULT_BUTTON_HEIGHT.dp
+            is Constants.Element.SELECTION_PICKER -> DEFAULT_BUTTON_HEIGHT.dp
+        }
+
 
 fun getAssetResourceId(mContext: Context, fileName: String): Drawable? {
     return try {
@@ -239,8 +265,8 @@ fun getAssetResourceId(mContext: Context, fileName: String): Drawable? {
 }
 
 
-fun performClick(mContext: Context? = null, id: String) {
-    mContext?.let {
+fun performClick(mContext: Context, isTappable: Boolean?, id: String?) {
+    isTappable.takeIf { it == true && id != null }?.let {
         Toast
             .makeText(mContext, id, Toast.LENGTH_LONG)
             .show()
