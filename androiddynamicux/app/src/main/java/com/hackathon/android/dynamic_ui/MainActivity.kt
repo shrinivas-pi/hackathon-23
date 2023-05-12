@@ -2,36 +2,41 @@ package com.hackathon.android.dynamic_ui
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.contentColorFor
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -40,6 +45,7 @@ import java.io.IOException
 
 private const val DEFAULT_IMAGE_HEIGHT = 160
 private const val DEFAULT_BUTTON_HEIGHT = 50
+private const val DEFAULT_TEXT_HEIGHT = 40
 private const val DEFAULT_PADDING = 0
 
 class MainActivity : ComponentActivity() {
@@ -96,7 +102,13 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
             performClick(mContext, element.properties?.isTapabble, element.id)
         }
     ) {
-        element.title?.let { Text(text = it) }
+        element.title?.let {
+            Text(
+                text = it,
+                fontWeight = FontWeight.Bold,
+                fontFamily = element.properties?.toProperties()?.textStyle?.fontFamily
+            )
+        }
     }
 }
 
@@ -225,8 +237,18 @@ fun buttonColors(
 //}*/
 
 @Composable
-fun BuildLabelView(element: UiElement) {
-    element.text?.let { Text(text = it) }
+fun BuildLabelView(element: UiElement, modifier: Modifier = Modifier) {
+    val properties = element.properties?.toProperties()
+    element.text?.let {
+        properties?.textStyle?.let { textStyle ->
+            Text(
+                text = it,
+                style = textStyle,
+                color = properties.foregroundColor ?: Color.Cyan,
+                modifier = getModifier(modifier, element, Constants.Element.LABEL)
+            )
+        }
+    }
 }
 
 @Composable
@@ -259,10 +281,10 @@ fun BuildImageView(element: UiElement, modifier: Modifier = Modifier) {
     }
 }
 
-fun getImageContentScale(properties: UiAttributes?): ContentScale=
+fun getImageContentScale(properties: UiAttributes?): ContentScale =
     if (properties?.fillView == true) {
         ContentScale.FillBounds
-    } else if(properties?.fitInside == true){
+    } else if (properties?.fitInside == true) {
         ContentScale.Inside
     } else {
         ContentScale.None
@@ -298,7 +320,7 @@ fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
             is Constants.Element.IMAGE -> DEFAULT_IMAGE_HEIGHT.dp
             is Constants.Element.BUTTON -> DEFAULT_BUTTON_HEIGHT.dp
             is Constants.Element.ROW -> DEFAULT_BUTTON_HEIGHT.dp
-            is Constants.Element.LABEL -> DEFAULT_BUTTON_HEIGHT.dp
+            is Constants.Element.LABEL -> DEFAULT_TEXT_HEIGHT.dp
             is Constants.Element.SELECTION_PICKER -> DEFAULT_BUTTON_HEIGHT.dp
         }
 
@@ -313,9 +335,9 @@ fun getAssetResourceId(mContext: Context, fileName: String): Int =
 
 fun performClick(mContext: Context, isTappable: Boolean?, id: String?) {
     isTappable.takeIf { it == true && id != null }?.let {
-        Toast
-            .makeText(mContext, id, Toast.LENGTH_LONG)
-            .show()
+        when (id) {
+            Constants.Actions.DatePicker.id -> {}
+        }
     }
 }
 
@@ -341,14 +363,13 @@ fun BuildContainerView(element: UiElement, modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        val properties = element.properties.toProperties()
+        val properties = element.properties?.toProperties()
         Container(
             element = element,
             placeHolderText = element.placeHolder,
             leftIcon = element.leftIcon,
             rightIcon = element.rightIcon,
             rightSecondIcon = element.rightSecondIcon,
-            onIcGpsClicked = {},
             properties = properties
         )
     }
@@ -364,11 +385,6 @@ fun BuildRowView(element: UiElement) {
     }
 }
 
-//fun regexValidator(regex: String, input: String) =
-//    Pattern.compile(regex, Pattern.CASE_INSENSITIVE)
-//        .matcher(input)
-//        .find()
-
 fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     val jsonString: String
     try {
@@ -380,7 +396,7 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     return jsonString
 }
 
-//fun getScreenHeightWidth(context: Context): Pair<Float, Float> {
+/*//fun getScreenHeightWidth(context: Context): Pair<Float, Float> {
 //    val displayMetrics: DisplayMetrics = context.resources.displayMetrics
 //    val dpHeight = displayMetrics.heightPixels / displayMetrics.density
 //    val dpWidth = displayMetrics.widthPixels / displayMetrics.density
@@ -423,7 +439,7 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
 //        uiElement.attributes.text = data?.get(uiElement.attributes.jsonKey)?.asString ?: ""
 //        BuildView(uiElement)
 //    }
-//}
+//}*/
 
 @Composable
 fun Greeting(name: String) {

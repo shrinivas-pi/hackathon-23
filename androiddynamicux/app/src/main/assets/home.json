@@ -22,6 +22,19 @@
       "type": "vContainer",
       "children": [
         {
+          "id": "logo",
+          "type": "image",
+          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 24.0
+            },
+            "alignment": "center",
+            "foregroundColor": "#2B66E7"
+          }
+        },
+        {
           "id": "maps",
           "type": "image",
           "link": "map",
@@ -343,17 +356,17 @@
             },
             {
               "id": "loginButton",
-              "type": "button",
-              "title": "Sign Up",
+              "type": "text",
+              "text": "Sign Up",
               "properties": {
                 "deeplink": "pclnnegotiator://signup",
                 "isTapabble": true,
+                "titleAlignment": "left",
                 "font": {
                   "size": 14,
                   "type": "bold"
                 },
-                "foregroundColor": "#007AFF",
-                "titleAlignment": "left",
+                "foregroundColor": "#0068EF",
                 "padding": {
                   "left": 16,
                   "right": 16

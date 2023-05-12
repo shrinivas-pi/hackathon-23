@@ -44,4 +44,13 @@ object Constants {
                 get() = "selectionPicker"
         }
     }
+
+    sealed interface Actions{
+        val id : String
+        object DatePicker : Actions {
+            override val id: String
+                get() = "datePicker"
+
+        }
+    }
 }
