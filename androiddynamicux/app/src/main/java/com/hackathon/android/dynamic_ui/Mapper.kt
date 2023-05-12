@@ -26,3 +26,6 @@ data class ComposeProperties(
     val size: Size?,
     val radius: Dp?
 )
+
+val String.color
+    get() = Color(android.graphics.Color.parseColor(this))

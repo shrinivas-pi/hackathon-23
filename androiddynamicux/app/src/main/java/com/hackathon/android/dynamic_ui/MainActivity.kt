@@ -29,6 +29,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.gson.Gson
@@ -86,7 +88,8 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
     Button(
         modifier = getModifier(modifier, element, Constants.Element.BUTTON),
         colors = buttonColors(
-            containerColor = element.properties?.backgroundColor?.color ?: MaterialTheme.colors.primary
+            containerColor = element.properties?.backgroundColor?.color
+                ?: MaterialTheme.colors.primary
         ),
         onClick = {
             performClick(mContext, element.properties?.isTapabble, element.id)
@@ -233,20 +236,24 @@ fun BuildImageView(element: UiElement, modifier: Modifier = Modifier) {
             if (element.properties?.isNetworkLoadable == true) {
                 rememberAsyncImagePainter(element.link)
             } else {
-                rememberDrawablePainter(element.link?.let { it1 ->
-                    getAssetResourceId(
-                        mContext,
-                        it1
+                element.link?.let {
+                    painterResource(
+                        getAssetResourceId(
+                            mContext,
+                            it
+                        )
                     )
-                })
+                }
             }
-        Image(
-            painter = image,
-            contentDescription = null,
-            modifier = getModifier(modifier, element, Constants.Element.IMAGE).clickable {
-                performClick(mContext, element.properties?.isTapabble, element.id)
-            },
-        )
+        image?.let {
+            Image(
+                painter = it,
+                contentDescription = null,
+                modifier = getModifier(modifier, element, Constants.Element.IMAGE).clickable {
+                    performClick(mContext, element.properties?.isTapabble, element.id)
+                },
+            )
+        }
     }
 }
 
@@ -282,14 +289,12 @@ fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
         }
 
 
-fun getAssetResourceId(mContext: Context, fileName: String): Drawable? {
-    return try {
-        val inputStream = mContext.assets.open(fileName)
-        Drawable.createFromStream(inputStream, null)
-    } catch (e: Exception) {
-        null
-    }
-}
+fun getAssetResourceId(mContext: Context, fileName: String): Int =
+    mContext.resources.getIdentifier(
+        "ic_calendar",
+        "drawable",
+        mContext.packageName
+    )
 
 
 fun performClick(mContext: Context, isTappable: Boolean?, id: String?) {
@@ -338,6 +343,7 @@ fun BuildContainerView(element: UiElement, modifier: Modifier = Modifier) {
 private fun containerColor() {
 
 }
+
 @Composable
 fun BuildRowView(element: UiElement) {
     Row(
@@ -421,6 +427,3 @@ fun DefaultPreview() {
         Greeting("Android")
     }
 }
-
-val String.color
-    get() = Color(android.graphics.Color.parseColor(this))

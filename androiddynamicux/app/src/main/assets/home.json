@@ -26,7 +26,7 @@
         {
           "id": "maps",
           "type": "image",
-          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
+          "link": "ic_calendar",
           "properties": {
             "isTapabble": true,
             "isNetworkLoadable": true,
@@ -50,7 +50,7 @@
           "leftIcon": {
             "id": "searchIcon",
             "type": "image",
-            "link": "searchIcon",
+            "link": "ic_calendar",
             "properties": {
               "isTapabble": true,
               "isNetworkLoadable": false,
@@ -171,7 +171,7 @@
         {
           "id": "vipTierImage",
           "type": "image",
-          "link": "tierImage",
+          "link": "ic_calendar",
           "properties": {
             "isTapabble": false,
             "isNetworkLoadable": false
