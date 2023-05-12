@@ -22,9 +22,10 @@ fun UiAttributes.toProperties() = ComposeProperties(
         fontWeight = this.font?.type.toFontType(),
         fontFamily = RobotoFontFamily
     ),
-    size = this.size,
-    radius = this.radius?.dp,
-    isTapabble = this.isTapabble ?: false
+    size = this?.size,
+    radius = this?.radius?.dp,
+    shape = this?.shape.toShape(),
+    isTapabble = this?.isTapabble ?: false
 )
 
 private fun String?.toFontType(): FontWeight = when(this) {
@@ -33,13 +34,28 @@ private fun String?.toFontType(): FontWeight = when(this) {
     else -> FontWeight.Normal
 }
 
+private fun Shape?.toShape(): UiShape = UiShape(
+    topStart = this?.topStart?.dp ?: 0.dp,
+    topEnd = this?.topEnd?.dp ?: 0.dp,
+    bottomStart = this?.bottomEnd?.dp ?: 0.dp,
+    bottomEnd = this?.bottomStart?.dp ?: 0.dp
+)
+
 data class ComposeProperties(
     val foregroundColor: Color? = null,
     val backgroundColor: Color? = null,
     val textStyle: TextStyle,
     val size: Size?,
     val radius: Dp?,
+    val shape: UiShape,
     val isTapabble: Boolean = false
+)
+
+data class UiShape(
+    val topStart: Dp,
+    val topEnd: Dp,
+    val bottomStart: Dp,
+    val bottomEnd: Dp
 )
 
 val String.color

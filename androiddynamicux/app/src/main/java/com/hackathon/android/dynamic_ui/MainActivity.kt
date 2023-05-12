@@ -74,22 +74,88 @@ class MainActivity : ComponentActivity() {
 
 //LIST, IMAGE_VIEW,
 @Composable
-fun BuildView(element: UiElement) = when (element.type) {
-    Constants.Element.COLUMN.id -> BuildColumnView(element = element)
-    Constants.Element.ROW.id -> BuildRowView(element = element)
-    Constants.Element.LABEL.id -> BuildLabelView(element = element)
-    Constants.Element.IMAGE.id -> BuildImageView(element = element)
-    Constants.Element.SELECTION_PICKER.id -> BuildContainerView(element = element)
+fun BuildView(element: UiElement) {
+    val renderType = element.properties?.renderType?.getRenderType()
+    when (element.type) {
+        Constants.Element.COLUMN.id -> BuildColumnView(element = element, renderType)
+        Constants.Element.ROW.id -> BuildRowView(element = element, renderType)
+        Constants.Element.LABEL.id -> BuildLabelView(element = element, renderType)
+        Constants.Element.IMAGE.id -> BuildImageView(element = element, renderType)
+        Constants.Element.SELECTION_PICKER.id -> BuildContainerView(element = element, renderType)
 //    Constants.Element.TEXT -> BuildTextView(element = element)
 //    Constants.Element.FULL_WIDTH_TEXT -> BuildFullWidthTextView(element = element)
-    Constants.Element.BUTTON.id -> BuildButtonView(element = element)
+        Constants.Element.BUTTON.id -> BuildButtonView(element = element, renderType)
 //    Constants.Element.LIST_COLUMN -> data?.let { BuildListColumnView(element = element, data = it) }
 //    Constants.Element.LIST_ROW -> data?.let { BuildListRowView(element = element, data = it) }
-    else -> {}//TODO("add other element cases here")
+        else -> {}//TODO("add other element cases here")
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun BuildCardView(
+    element: UiElement,
+    modifier: Modifier = Modifier,
+    buildChildView: @Composable () -> Unit
+) {
+    val mContext = LocalContext.current
+    val properties = element.properties.toProperties()
+    Card(
+        modifier = Modifier
+            .padding(
+                start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+                top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+                end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+                bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+            )
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(
+            topStart = properties.shape.topStart,
+            topEnd = properties.shape.topEnd,
+            bottomStart = properties.shape.bottomStart,
+            bottomEnd = properties.shape.bottomEnd
+        ),
+        elevation = 5.dp,
+        onClick = {
+            performClick(mContext, element.properties?.isTapabble, element.id)
+        }
+    ) {
+        buildChildView()
+    }
 }
 
 @Composable
-fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
+fun BuildRenderTypeView(
+    element: UiElement,
+    renderType: Constants.RenderType?,
+    buildChildView: @Composable () -> Unit
+) {
+    when (renderType) {
+        is Constants.RenderType.CARD -> BuildCardView(
+            element,
+            buildChildView = buildChildView
+        )
+        is Constants.RenderType.IMAGE -> buildChildView()
+        is Constants.RenderType.NONE -> buildChildView()
+        else -> buildChildView()
+    }
+
+}
+
+private fun String.getRenderType(): Constants.RenderType =
+    when (this) {
+        Constants.RenderType.CARD.id -> Constants.RenderType.CARD
+        Constants.RenderType.IMAGE.id -> Constants.RenderType.IMAGE
+        else -> Constants.RenderType.NONE
+    }
+
+
+@Composable
+fun BuildButtonView(
+    element: UiElement,
+    renderType: Constants.RenderType?,
+    modifier: Modifier = Modifier
+) {
     val mContext = LocalContext.current
     Button(
         modifier = getModifier(modifier, element, Constants.Element.BUTTON),
@@ -237,7 +303,7 @@ fun buttonColors(
 //}*/
 
 @Composable
-fun BuildLabelView(element: UiElement, modifier: Modifier = Modifier) {
+fun BuildLabelView(element: UiElement, renderType: Constants.RenderType? = null, modifier: Modifier = Modifier) {
     val properties = element.properties?.toProperties()
     element.text?.let {
         properties?.textStyle?.let { textStyle ->
@@ -252,7 +318,11 @@ fun BuildLabelView(element: UiElement, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun BuildImageView(element: UiElement, modifier: Modifier = Modifier) {
+fun BuildImageView(
+    element: UiElement,
+    renderType: Constants.RenderType? = null,
+    modifier: Modifier = Modifier
+) {
     val mContext = LocalContext.current
     element.link.takeIf { it?.isNotBlank() == true }?.let {
         val image =
@@ -342,47 +412,57 @@ fun performClick(mContext: Context, isTappable: Boolean?, id: String?) {
 }
 
 @Composable
-fun BuildColumnView(element: UiElement) {
-    Column(
-        modifier = Modifier.padding(
-            start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
-            top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
-            end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
-            bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
-        )
-    ) {
-        element.children?.forEach { BuildView(it) }
-    }
-}
+fun BuildColumnView(element: UiElement, renderType: Constants.RenderType? = null) =
+    BuildRenderTypeView(element = element, renderType, buildChildView = {
+        Column(
+            modifier = Modifier.padding(
+                start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+                top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+                end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+                bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+            )
+        ) {
+            element.children?.forEach { BuildView(it) }
+        }
+    })
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BuildContainerView(element: UiElement, modifier: Modifier = Modifier) {
-    Row(
-        modifier = getModifier(modifier, element, Constants.Element.BUTTON),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        val properties = element.properties?.toProperties()
-        Container(
-            element = element,
-            placeHolderText = element.placeHolder,
-            leftIcon = element.leftIcon,
-            rightIcon = element.rightIcon,
-            rightSecondIcon = element.rightSecondIcon,
-            properties = properties
-        )
-    }
+fun BuildContainerView(
+    element: UiElement,
+    renderType: Constants.RenderType? = null,
+    modifier: Modifier = Modifier
+) {
+    BuildRenderTypeView(element = element, renderType, buildChildView = {
+        Row(
+            modifier = getModifier(modifier, element, Constants.Element.BUTTON),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            val properties = element.properties.toProperties()
+            Container(
+                element = element,
+                placeHolderText = element.placeHolder,
+                leftIcon = element.leftIcon,
+                rightIcon = element.rightIcon,
+                rightSecondIcon = element.rightSecondIcon,
+                properties = properties
+            )
+        }
+    })
 }
 
 @Composable
-fun BuildRowView(element: UiElement) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        element.children?.forEach { BuildView(it) }
-    }
+fun BuildRowView(element: UiElement, renderType: Constants.RenderType? = null) {
+    BuildRenderTypeView(element = element, renderType, buildChildView = {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            element.children?.forEach { BuildView(it) }
+        }
+    })
 }
 
 fun getJsonDataFromAsset(context: Context, fileName: String): String? {
@@ -441,15 +521,15 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
 //    }
 //}*/
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+        @Composable
+        fun Greeting(name: String) {
+            Text(text = "Hello $name!")
+        }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AndroidDynamicUxTheme {
-        Greeting("Android")
-    }
-}
+        @Preview(showBackground = true)
+        @Composable
+        fun DefaultPreview() {
+            AndroidDynamicUxTheme {
+                Greeting("Android")
+            }
+        }

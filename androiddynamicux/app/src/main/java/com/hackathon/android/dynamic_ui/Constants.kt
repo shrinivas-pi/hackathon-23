@@ -12,7 +12,7 @@ object Constants {
     }
 
     sealed interface Element {
-        val id : String
+        val id: String
 
         object COLUMN : Element {
             override val id: String
@@ -42,6 +42,25 @@ object Constants {
         object SELECTION_PICKER : Element {
             override val id: String
                 get() = "selectionPicker"
+        }
+    }
+
+    sealed interface RenderType {
+        val id: String
+
+        object CARD : RenderType {
+            override val id: String
+                get() = "card"
+        }
+
+        object IMAGE : RenderType {
+            override val id: String
+                get() = "image"
+        }
+
+        object NONE : RenderType {
+            override val id: String
+                get() = "none"
         }
     }
 

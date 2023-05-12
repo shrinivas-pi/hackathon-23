@@ -25,7 +25,9 @@ data class UiAttributes(
     val radius: Int?,
     val size: Size?,
     val fillView: Boolean?,
-    val fitInside: Boolean?
+    val fitInside: Boolean?,
+    val renderType: String?,
+    val shape: Shape?
 )
 
 data class Size(
@@ -43,4 +45,11 @@ data class Padding(
     val right: Int?,
     val top: Int?,
     val bottom: Int?
+)
+
+data class Shape(
+    val topStart: Int?,
+    val topEnd: Int?,
+    val bottomStart: Int?,
+    val bottomEnd: Int?
 )

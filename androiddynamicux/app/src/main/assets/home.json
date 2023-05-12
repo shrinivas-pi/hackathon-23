@@ -3,24 +3,24 @@
   "type": "vContainer",
   "children": [
     {
-      "id": "logo",
-      "type": "image",
-      "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
-      "properties": {
-        "size": {
-          "width": 103,
-          "height": 50.0
-        },
-        "isNetworkLoadable": true,
-        "alignment": "center",
-        "foregroundColor": "#2B66E7",
-        "fillView": false
-      }
-    },
-    {
       "id": "searchForm",
       "type": "vContainer",
       "children": [
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
+          "properties": {
+            "size": {
+              "width": 103,
+              "height": 50.0
+            },
+            "isNetworkLoadable": true,
+            "alignment": "center",
+            "foregroundColor": "#2B66E7",
+            "fillView": false
+          }
+        },
         {
           "id": "maps",
           "type": "image",
@@ -274,9 +274,13 @@
       "properties": {
         "interItemSpacing": 8,
         "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
         "padding": {
-          "left": 8,
-          "right": 8
+          "bottom": 8
+        },
+        "shape": {
+          "bottomStart": 16,
+          "bottomEnd": 16
         },
         "radius": 16,
         "renderType": "card"
@@ -377,6 +381,7 @@
         "isTapabble": true,
         "isNetworkLoadable": false,
         "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
         "radius": 8,
         "padding": {
           "left": 8,
@@ -441,6 +446,7 @@
         },
         "alignment": "center",
         "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
         "radius": 16,
         "padding": {
           "left": 8,
