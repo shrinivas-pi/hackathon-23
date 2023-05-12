@@ -24,6 +24,8 @@ data class UiAttributes(
     val padding: Padding?,
     val radius: Int?,
     val size: Size?,
+    val fillView: Boolean?,
+    val fitInside: Boolean?
 )
 
 data class Size(

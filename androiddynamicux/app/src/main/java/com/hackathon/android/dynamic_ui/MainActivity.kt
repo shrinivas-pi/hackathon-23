@@ -1,7 +1,6 @@
 package com.hackathon.android.dynamic_ui
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -24,15 +23,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.rememberAsyncImagePainter
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hackathon.android.dynamic_ui.ui.theme.AndroidDynamicUxTheme
@@ -91,6 +91,7 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
             containerColor = element.properties?.backgroundColor?.color
                 ?: MaterialTheme.colors.primary
         ),
+        shape = RoundedCornerShape(element.properties?.radius?.dp ?: 0.dp),
         onClick = {
             performClick(mContext, element.properties?.isTapabble, element.id)
         }
@@ -248,6 +249,7 @@ fun BuildImageView(element: UiElement, modifier: Modifier = Modifier) {
         image?.let {
             Image(
                 painter = it,
+                contentScale = getImageContentScale(element.properties),
                 contentDescription = null,
                 modifier = getModifier(modifier, element, Constants.Element.IMAGE).clickable {
                     performClick(mContext, element.properties?.isTapabble, element.id)
@@ -256,6 +258,16 @@ fun BuildImageView(element: UiElement, modifier: Modifier = Modifier) {
         }
     }
 }
+
+fun getImageContentScale(properties: UiAttributes?): ContentScale=
+    if (properties?.fillView == true) {
+        ContentScale.FillBounds
+    } else if(properties?.fitInside == true){
+        ContentScale.Inside
+    } else {
+        ContentScale.None
+    }
+
 
 fun getModifier(
     modifier: Modifier,
@@ -269,12 +281,14 @@ fun getModifier(
 } ?: modifier
     .fillMaxWidth(
     )
-    .height(getHeightByType(type, element.properties?.size?.height?.dp))).padding(
-    start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
-    top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
-    end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
-    bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
-)
+    .height(getHeightByType(type, element.properties?.size?.height?.dp)))
+    .padding(
+        start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+        top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+        end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+        bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+    )
+    .clip(shape = RoundedCornerShape(element.properties?.radius?.dp ?: 0.dp))
 
 
 fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
@@ -308,8 +322,6 @@ fun performClick(mContext: Context, isTappable: Boolean?, id: String?) {
 @Composable
 fun BuildColumnView(element: UiElement) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
         modifier = Modifier.padding(
             start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
             top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
@@ -340,10 +352,6 @@ fun BuildContainerView(element: UiElement, modifier: Modifier = Modifier) {
             properties = properties
         )
     }
-}
-
-private fun containerColor() {
-
 }
 
 @Composable

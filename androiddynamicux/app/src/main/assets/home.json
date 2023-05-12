@@ -7,17 +7,14 @@
       "type": "image",
       "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
       "properties": {
-        "isNetworkLoadable": true,
         "size": {
-          "height": 100.0
+          "width": 103,
+          "height": 50.0
         },
-        "padding": {
-          "left": 16,
-          "right": 16,
-          "top": 16,
-          "bottom": 0
-        },
-        "radius": 8
+        "isNetworkLoadable": true,
+        "alignment": "center",
+        "foregroundColor": "#2B66E7",
+        "fillView": false
       }
     },
     {
@@ -27,21 +24,27 @@
         {
           "id": "maps",
           "type": "image",
-          "link": "ic_calendar",
+          "link": "map",
+          "allowedActions": [
+            {
+              "type": "tap",
+              "deeplink": "negotiator://homepage"
+            }
+          ],
           "properties": {
             "isTapabble": true,
-            "isNetworkLoadable": true,
+            "isNetworkLoadable": false,
             "size": {
-              "height": 200.0,
-              "width": 200.0
+              "height": 100.0
             },
             "padding": {
-              "left": 16,
-              "right": 16,
-              "top": 16,
-              "bottom": 16
+              "left": 8,
+              "right": 8,
+              "top": 8,
+              "bottom": 8
             },
-            "radius": 8
+            "radius": 8,
+            "fillView": true
           }
         },
         {
@@ -64,7 +67,8 @@
                 "right": 8,
                 "top": 8,
                 "bottom": 8
-              }
+              },
+              "fillView": false
             }
           },
           "rightIcon": {
@@ -83,25 +87,31 @@
                 "right": 8,
                 "top": 8,
                 "bottom": 8
-              }
+              },
+              "fillView": false
             }
           },
+          "allowedActions": [
+            {
+              "type": "tap"
+            }
+          ],
           "properties": {
             "isTapabble": true,
             "font": {
               "size": 16,
-              "type": "normal"
+              "type": "medium"
             },
-            "foregroundColor": "#001833",
-            "backgroundColor": "#EDF0F3",
-            "padding": {
-              "left": 16,
-              "right": 16,
-              "top": 4,
-              "bottom": 4
-            },
+            "foregroundColor": "#000000",
+            "backgroundColor": "#F2F2F2",
             "size": {
               "height": 50.0
+            },
+            "padding": {
+              "left": 8,
+              "right": 8,
+              "top": 4,
+              "bottom": 4
             },
             "radius": 24
           }
@@ -126,20 +136,26 @@
                 "right": 8,
                 "top": 8,
                 "bottom": 8
-              }
+              },
+              "fillView": false
             }
           },
+          "allowedActions": [
+            {
+              "type": "tap"
+            }
+          ],
           "properties": {
             "isTapabble": true,
             "font": {
               "size": 16,
-              "type": "normal"
+              "type": "medium"
             },
             "foregroundColor": "#001833",
             "backgroundColor": "#EDF0F3",
             "padding": {
-              "left": 16,
-              "right": 16,
+              "left": 8,
+              "right": 8,
               "top": 4,
               "bottom": 4
             },
@@ -169,7 +185,8 @@
                 "right": 8,
                 "top": 8,
                 "bottom": 8
-              }
+              },
+              "fillView": false
             }
           },
           "rightIcon": {
@@ -188,7 +205,8 @@
                 "right": 8,
                 "top": 8,
                 "bottom": 8
-              }
+              },
+              "fillView": false
             }
           },
           "rightSecondIcon": {
@@ -207,7 +225,8 @@
                 "right": 8,
                 "top": 8,
                 "bottom": 8
-              }
+              },
+              "fillView": false
             }
           },
           "properties": {
@@ -219,8 +238,8 @@
             "foregroundColor": "#001833",
             "backgroundColor": "#EDF0F3",
             "padding": {
-              "left": 16,
-              "right": 16,
+              "left": 8,
+              "right": 8,
               "top": 4,
               "bottom": 4
             },
@@ -243,8 +262,8 @@
             "foregroundColor": "#FFFFFF",
             "backgroundColor": "#0068EF",
             "padding": {
-              "left": 16,
-              "right": 16,
+              "left": 8,
+              "right": 8,
               "top": 4,
               "bottom": 4
             },
@@ -253,15 +272,14 @@
         }
       ],
       "properties": {
-        "interItemSpacing": 4,
-        "backgroundColor": "#958489",
+        "interItemSpacing": 8,
+        "backgroundColor": "#FFFFFF",
         "padding": {
           "left": 8,
-          "right": 8,
-          "top": 16,
-          "bottom": 16
+          "right": 8
         },
-        "radius": 8
+        "radius": 16,
+        "renderType": "card"
       }
     },
     {
@@ -271,10 +289,20 @@
         {
           "id": "vipTierImage",
           "type": "image",
-          "link": "ic_calendar",
+          "link": "ic_vip_logo",
           "properties": {
             "isTapabble": false,
-            "isNetworkLoadable": false
+            "isNetworkLoadable": false,
+            "size": {
+              "width": 56,
+              "height": 56
+            },
+            "padding": {
+              "left": 8,
+              "right": 8
+            },
+            "fillView": false,
+            "fitInside": true
           }
         },
         {
@@ -293,9 +321,7 @@
                 "foregroundColor": "#000000",
                 "padding": {
                   "left": 16,
-                  "right": 16,
-                  "top": 16,
-                  "bottom": 4
+                  "right": 16
                 }
               }
             },
@@ -311,9 +337,7 @@
                 "foregroundColor": "#000000",
                 "padding": {
                   "left": 16,
-                  "right": 16,
-                  "top": 4,
-                  "bottom": 16
+                  "right": 16
                 }
               }
             },
@@ -328,11 +352,22 @@
                   "size": 14,
                   "type": "bold"
                 },
-                "foregroundColor": "#007AFF"
+                "foregroundColor": "#007AFF",
+                "titleAlignment": "left",
+                "padding": {
+                  "left": 16,
+                  "right": 16
+                }
               }
             }
           ],
           "properties": {
+            "padding": {
+              "top": 8,
+              "bottom": 8
+            },
+            "interItemSpacing": 4,
+            "alignment": "left",
             "isTapabble": false,
             "isNetworkLoadable": false
           }
@@ -344,18 +379,80 @@
         "backgroundColor": "#FFFFFF",
         "radius": 8,
         "padding": {
-          "top": 8,
-          "bottom": 8,
           "left": 8,
           "right": 8
+        },
+        "renderType": "card"
+      }
+    },
+    {
+      "id": "marketing_banner",
+      "type": "vContainer",
+      "allowedActions": [
+        {
+          "type": "tap",
+          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
         }
+      ],
+      "children": [
+        {
+          "id": "bannerTitle",
+          "type": "text",
+          "text": "Experiences by Priceline",
+          "properties": {
+            "font": {
+              "size": 20,
+              "type": "bold"
+            },
+            "foregroundColor": "#2B66E7"
+          }
+        },
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://iili.io/HU70sUP.jpg",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 100.0
+            },
+            "alignment": "center",
+            "fillView": true
+          }
+        },
+        {
+          "id": "bannerDetail",
+          "type": "text",
+          "text": "Things to do in Empire State Building, Look at our recommendations there.",
+          "properties": {
+            "font": {
+              "size": 15,
+              "type": "regular"
+            },
+            "foregroundColor": "#000000"
+          }
+        }
+      ],
+      "properties": {
+        "interItemSpacing": 8,
+        "size": {
+          "width": 103,
+          "height": 24.0
+        },
+        "alignment": "center",
+        "backgroundColor": "#FFFFFF",
+        "radius": 16,
+        "padding": {
+          "left": 8,
+          "right": 8
+        },
+        "renderType": "card"
       }
     }
   ],
   "properties": {
     "scrollEnabled": true,
     "isTapabble": true,
-    "interItemSpacing": 16,
-    "backgroundColor": "#FFFFFF"
+    "interItemSpacing": 16
   }
 }
