@@ -28,14 +28,28 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun AndroiddynamicuxTheme(
+fun AndroidDynamicUxTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        darkColors(
+            primary = PricelineBlue,
+            primaryVariant = DarkBlue,
+            secondary = Green
+        )
     } else {
-        LightColorPalette
+        lightColors(
+            primary = PricelineBlue,
+            primaryVariant = DarkBlue,
+            secondary = Green,
+            secondaryVariant = DarkGreen,
+            onSecondary = White,
+            background = BaseGray,
+            surface = White,
+            onError = White,
+            onSurface = DarkerBlue,
+        )
     }
 
     MaterialTheme(

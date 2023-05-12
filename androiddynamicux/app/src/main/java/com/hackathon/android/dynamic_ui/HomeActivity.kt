@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.hackathon.android.dynamic_ui.ui.theme.AndroiddynamicuxTheme
+import com.hackathon.android.dynamic_ui.ui.theme.AndroidDynamicUxTheme
 
 class HomeActivity : ComponentActivity() {
 
@@ -22,7 +22,7 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         json = getJsonDataFromAsset(context = applicationContext, fileName = "home.json")
         setContent {
-            AndroiddynamicuxTheme {
+            AndroidDynamicUxTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -48,7 +48,7 @@ fun Greeting2(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    AndroiddynamicuxTheme {
+    AndroidDynamicUxTheme {
         Greeting2("Android")
     }
 }

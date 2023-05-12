@@ -1,10 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--region DSM Colors-->
+    <color name="priceline_blue">#0068EF</color>
+    <color name="light_blue">#E8F2FF</color>
+    <color name="dark_blue">#004499</color>
+    <color name="darker_blue">#001833</color>
+    <color name="darkest_blue">#001023</color>
+    <color name="darker_blue_38">#61001833</color>
+    <color name="tone_blue">#99C3F9</color>
+    <color name="late_night_surface_blue">#122841</color>
+    <color name="green">#00AA00</color>
+    <color name="light_green">#ECF7EC</color>
+    <color name="highlight_green">#D0F1AC</color>
+    <color name="dark_green">#006600</color>
+    <color name="pale_green">#80D580</color>
+    <color name="gray">#C0CAD5</color>
+    <color name="light_gray">#EDF0F3</color>
+    <color name="base_gray">#EDF0F3</color>
+    <color name="blue_gray">#4F6F8F</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_38">#61FFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="red">#CC0000</color>
+    <color name="light_red">#FBEBEB</color>
+    <color name="dark_red">#880000</color>
+    <color name="orange">#F68013</color>
+    <color name="light_orange">#FBEBEB</color>
+    <color name="dark_orange">#F06F20</color>
+    <color name="yellow">#FEDC2A</color>
+    <color name="dark_yellow">#B19A1D</color>
+    <color name="vip_gold">#827643</color>
+    <color name="vip_platinum">#2B2B2B</color>
+    <color name="black">#000000</color>
+    <!--endregion-->
 </resources>

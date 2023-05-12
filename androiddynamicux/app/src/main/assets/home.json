@@ -3,6 +3,23 @@
   "type": "vContainer",
   "children": [
     {
+      "id": "logo",
+      "type": "image",
+      "link": "priceline_logo",
+      "properties": {
+        "size": {
+          "height": 100.0
+        },
+        "padding": {
+          "left": 16,
+          "right": 16,
+          "top": 16,
+          "bottom": 0
+        },
+        "radius": 8
+      }
+    },
+    {
       "id": "searchForm",
       "type": "vContainer",
       "children": [
@@ -22,7 +39,8 @@
               "right": 16,
               "top": 16,
               "bottom": 16
-            }
+            },
+            "radius": 8
           }
         },
         {
@@ -32,19 +50,27 @@
           "leftIcon": {
             "id": "searchIcon",
             "type": "image",
-            "link": "",
+            "link": "searchIcon",
             "properties": {
               "isTapabble": true,
-              "isNetworkLoadable": false
+              "isNetworkLoadable": false,
+              "size": {
+                "height": 16.0,
+                "width": 16.0
+              }
             }
           },
           "rightIcon": {
             "id": "locationIcon",
             "type": "image",
-            "link": "",
+            "link": "locationIcon",
             "properties": {
               "isTapabble": true,
-              "isNetworkLoadable": false
+              "isNetworkLoadable": false,
+              "size": {
+                "height": 16.0,
+                "width": 16.0
+              }
             }
           },
           "properties": {
@@ -53,15 +79,18 @@
               "size": 16,
               "type": "normal"
             },
-            "foregroundColor": "#094859",
-            "backgroundColor": "#958489",
+            "foregroundColor": "#001833",
+            "backgroundColor": "#EDF0F3",
             "padding": {
               "left": 16,
               "right": 16,
-              "top": 16,
-              "bottom": 16
+              "top": 4,
+              "bottom": 4
             },
-            "radius": 8
+            "size": {
+              "height": 50.0
+            },
+            "radius": 24
           }
         },
         {
@@ -71,10 +100,14 @@
           "leftIcon": {
             "id": "calendarIcon",
             "type": "image",
-            "link": "",
+            "link": "calendarIcon",
             "properties": {
               "isTapabble": true,
-              "isNetworkLoadable": false
+              "isNetworkLoadable": false,
+              "size": {
+                "height": 16.0,
+                "width": 16.0
+              }
             }
           },
           "properties": {
@@ -83,15 +116,18 @@
               "size": 16,
               "type": "normal"
             },
-            "foregroundColor": "#094859",
-            "backgroundColor": "#958489",
+            "foregroundColor": "#001833",
+            "backgroundColor": "#EDF0F3",
             "padding": {
               "left": 16,
               "right": 16,
-              "top": 16,
-              "bottom": 16
+              "top": 4,
+              "bottom": 4
             },
-            "radius": 8
+            "size": {
+              "height": 50.0
+            },
+            "radius": 24
           }
         },
         {
@@ -102,21 +138,22 @@
             "isTapabble": true,
             "font": {
               "size": 16,
-              "type": "normal"
+              "type": "bold"
             },
             "foregroundColor": "#FFFFFF",
-            "backgroundColor": "#958489",
+            "backgroundColor": "#0068EF",
             "padding": {
               "left": 16,
               "right": 16,
-              "top": 16,
-              "bottom": 16
+              "top": 4,
+              "bottom": 4
             },
-            "radius": 8
+            "radius": 24
           }
         }
       ],
       "properties": {
+        "interItemSpacing": 4,
         "backgroundColor": "#958489",
         "padding": {
           "left": 16,
@@ -134,20 +171,10 @@
         {
           "id": "vipTierImage",
           "type": "image",
-          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
+          "link": "tierImage",
           "properties": {
             "isTapabble": false,
-            "isNetworkLoadable": true,
-            "size": {
-              "height": 100.0,
-              "width": 100.0
-            },
-            "padding": {
-              "left": 16,
-              "right": 16,
-              "top": 16,
-              "bottom": 16
-            }
+            "isNetworkLoadable": false
           }
         },
         {
@@ -160,7 +187,7 @@
               "text": "Become a priceline VIP",
               "properties": {
                 "font": {
-                  "size": 14,
+                  "size": 19,
                   "type": "bold"
                 },
                 "foregroundColor": "#000000",
@@ -178,8 +205,8 @@
               "text": "Login or signup for free to unlock incredible deals and benefits.",
               "properties": {
                 "font": {
-                  "size": 14,
-                  "type": "bold"
+                  "size": 15,
+                  "type": "regular"
                 },
                 "foregroundColor": "#000000",
                 "padding": {
@@ -198,10 +225,10 @@
                 "deeplink": "pclnnegotiator://signup",
                 "isTapabble": true,
                 "font": {
-                  "size": 16,
-                  "type": "normal"
+                  "size": 14,
+                  "type": "bold"
                 },
-                "foregroundColor": "#958489"
+                "foregroundColor": "#007AFF"
               }
             }
           ],
@@ -227,6 +254,7 @@
   ],
   "properties": {
     "scrollEnabled": true,
-    "isTapabble": true
+    "isTapabble": true,
+    "interItemSpacing": 16
   }
 }

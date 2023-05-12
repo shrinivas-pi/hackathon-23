@@ -8,6 +8,7 @@ data class UiElement(
     val title: String?,
     val properties: UiAttributes?,
     val children: List<UiElement>?,
+    val placeHolder: String?
 )
 
 data class UiAttributes(

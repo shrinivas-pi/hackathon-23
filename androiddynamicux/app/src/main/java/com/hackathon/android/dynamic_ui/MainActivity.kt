@@ -19,11 +19,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Button
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.hackathon.android.dynamic_ui.ui.theme.AndroiddynamicuxTheme
+import com.hackathon.android.dynamic_ui.ui.theme.AndroidDynamicUxTheme
 import java.io.IOException
 
 private const val DEFAULT_IMAGE_HEIGHT = 160
@@ -38,7 +48,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         json = getJsonDataFromAsset(context = applicationContext, fileName = "layout.json")
         setContent {
-            AndroiddynamicuxTheme {
+            AndroidDynamicUxTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -61,6 +71,7 @@ fun BuildView(element: UiElement) = when (element.type) {
     Constants.Element.ROW.id -> BuildRowView(element = element)
     Constants.Element.LABEL.id -> BuildLabelView(element = element)
     Constants.Element.IMAGE.id -> BuildImageView(element = element)
+    Constants.Element.SELECTION_PICKER.id -> BuildContainerView(element = element)
 //    Constants.Element.TEXT -> BuildTextView(element = element)
 //    Constants.Element.FULL_WIDTH_TEXT -> BuildFullWidthTextView(element = element)
     Constants.Element.BUTTON.id -> BuildButtonView(element = element)
@@ -100,7 +111,7 @@ fun buttonColors(
     disabledContentColor = disabledContentColor
 )
 
-//@Composable
+/*//@Composable
 //fun BuildTextView(element: UiElement) {
 //    var text by rememberSaveable {
 //        mutableStateOf("")
@@ -207,7 +218,7 @@ fun buttonColors(
 //            )
 //        }
 //    }
-//}
+//}*/
 
 @Composable
 fun BuildLabelView(element: UiElement) {
@@ -305,6 +316,28 @@ fun BuildColumnView(element: UiElement) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun BuildContainerView(element: UiElement, modifier: Modifier = Modifier) {
+    Row(
+        modifier = getModifier(modifier, element, Constants.Element.BUTTON),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        val properties = element.properties.toProperties()
+        Container(
+            locationText = element.placeHolder,
+            leftIconId = R.drawable.ic_search_24,
+            rightIconId = R.drawable.ic_gps_fixed,
+            onIcGpsClicked = {},
+            properties = properties
+        )
+    }
+}
+
+private fun containerColor() {
+
+}
 @Composable
 fun BuildRowView(element: UiElement) {
     Row(
@@ -384,7 +417,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    AndroiddynamicuxTheme {
+    AndroidDynamicUxTheme {
         Greeting("Android")
     }
 }
