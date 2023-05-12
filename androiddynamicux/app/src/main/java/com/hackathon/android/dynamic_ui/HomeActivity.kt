@@ -6,9 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -37,18 +37,13 @@ class HomeActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting2(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     AndroidDynamicUxTheme {
-        Greeting2("Android")
+        val json = getJsonDataFromAsset(context = LocalContext.current, fileName = "home.json")
+        val uiElement: UiElement =
+            Gson().fromJson(json, object : TypeToken<UiElement>() {}.type)
+        BuildView(element = uiElement)
     }
 }

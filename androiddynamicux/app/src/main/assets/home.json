@@ -12,7 +12,6 @@
           "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
           "properties": {
             "size": {
-              "width": 103,
               "height": 50.0
             },
             "isNetworkLoadable": true,
@@ -276,10 +275,15 @@
         "backgroundColor": "#FFFFFF",
         "foregroundColor": "#FFFFFF",
         "padding": {
-          "bottom": 8
+          "left": 8,
+          "right": 8,
+          "bottom": 8,
+          "top": 8
         },
         "shape": {
+          "topStart": 16,
           "bottomStart": 16,
+          "topEnd": 16,
           "bottomEnd": 16
         },
         "radius": 16,
@@ -302,8 +306,7 @@
               "height": 56
             },
             "padding": {
-              "left": 8,
-              "right": 8
+              "left": 16
             },
             "fillView": false,
             "fitInside": true
@@ -385,7 +388,15 @@
         "radius": 8,
         "padding": {
           "left": 8,
-          "right": 8
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
         },
         "renderType": "card"
       }
@@ -450,7 +461,15 @@
         "radius": 16,
         "padding": {
           "left": 8,
-          "right": 8
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
         },
         "renderType": "card"
       }

@@ -5,20 +5,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
@@ -26,7 +40,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -74,11 +87,7 @@ fun BuildView(element: UiElement) {
         Constants.Element.LABEL.id -> BuildLabelView(element = element, renderType)
         Constants.Element.IMAGE.id -> BuildImageView(element = element, renderType)
         Constants.Element.SELECTION_PICKER.id -> BuildContainerView(element = element, renderType)
-//    Constants.Element.TEXT -> BuildTextView(element = element)
-//    Constants.Element.FULL_WIDTH_TEXT -> BuildFullWidthTextView(element = element)
         Constants.Element.BUTTON.id -> BuildButtonView(element = element, renderType)
-//    Constants.Element.LIST_COLUMN -> data?.let { BuildListColumnView(element = element, data = it) }
-//    Constants.Element.LIST_ROW -> data?.let { BuildListRowView(element = element, data = it) }
         else -> {}//TODO("add other element cases here")
     }
 }
@@ -127,6 +136,7 @@ fun BuildRenderTypeView(
             element,
             buildChildView = buildChildView
         )
+
         is Constants.RenderType.IMAGE -> buildChildView()
         is Constants.RenderType.NONE -> buildChildView()
         else -> buildChildView()
@@ -150,7 +160,7 @@ fun BuildButtonView(
 ) {
     val mContext = LocalContext.current
     Button(
-        modifier = getModifier(modifier, element, Constants.Element.BUTTON),
+        modifier = modifier.applyModifier(element = element, type = Constants.Element.BUTTON),
         colors = buttonColors(
             containerColor = element.properties?.backgroundColor?.color
                 ?: MaterialTheme.colors.primary
@@ -185,117 +195,12 @@ fun buttonColors(
     disabledContentColor = disabledContentColor
 )
 
-/*//@Composable
-//fun BuildTextView(element: UiElement) {
-//    var text by rememberSaveable {
-//        mutableStateOf("")
-//    }
-//
-//    val keyboardOptions: KeyboardOptions = when {
-//        element.attributes.type.equals("password", true) -> {
-//            KeyboardOptions(keyboardType = KeyboardType.Password)
-//        }
-//
-//        element.attributes.type.equals("email", true) -> {
-//            KeyboardOptions(keyboardType = KeyboardType.Email)
-//        }
-//
-//        else -> {
-//            KeyboardOptions(keyboardType = KeyboardType.Text)
-//        }
-//    }
-//
-//    val modifier = Modifier
-//        .padding(
-//            start = element.attributes.modifierOptions.paddingStart.dp,
-//            top = element.attributes.modifierOptions.paddingTop.dp,
-//            end = element.attributes.modifierOptions.paddingEnd.dp,
-//            bottom = element.attributes.modifierOptions.paddingBottom.dp
-//        )
-//    OutlinedTextField(
-//        modifier = modifier,
-//        value = text,
-//        onValueChange = { text = it },
-//        keyboardOptions = keyboardOptions,
-//        label = { Text(text = element.attributes.placeholder) }
-//    )
-//}
-
-//@Composable
-//fun BuildFullWidthTextView(element: UiElement) {
-//    var text by rememberSaveable { mutableStateOf("") }
-//    var showError by rememberSaveable { mutableStateOf(false) }
-//
-//    var passwordVisibility by remember {
-//        mutableStateOf(
-//            !element.attributes.type.equals("password", true)
-//        )
-//    }
-//    var image: ImageVector? = null
-//
-//    val keyboardOptions: KeyboardOptions = when {
-//        element.attributes.type.equals(Constants.TextFieldType.PASSWORD, true) -> {
-//            KeyboardOptions(keyboardType = KeyboardType.Password)
-//        }
-//
-//        element.attributes.type.equals(Constants.TextFieldType.EMAIL, true) -> {
-//            KeyboardOptions(keyboardType = KeyboardType.Email)
-//        }
-//
-//        else -> {
-//            KeyboardOptions(keyboardType = KeyboardType.Text)
-//        }
-//    }
-//
-//    if (element.attributes.type.equals("password", true)) {
-//        image = if (passwordVisibility)
-//            Icons.Filled.Visibility
-//        else Icons.Filled.VisibilityOff
-//    }
-//
-//    val modifier = Modifier
-//        .fillMaxWidth()
-//        .padding(
-//            start = element.attributes.modifierOptions.paddingStart.dp,
-//            top = element.attributes.modifierOptions.paddingTop.dp,
-//            end = element.attributes.modifierOptions.paddingEnd.dp,
-//            bottom = element.attributes.modifierOptions.paddingBottom.dp
-//        )
-//    OutlinedTextField(
-//        modifier = modifier,
-//        value = text,
-//        keyboardOptions = keyboardOptions,
-//        onValueChange = {
-//            text = it
-//            showError = element.attributes.regex?.let { it1 -> regexValidator(it1, text) } == false
-//        },
-//        isError = showError,
-//        label = { Text(text = element.attributes.placeholder) },
-//        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-//        trailingIcon = {
-//            IconButton(onClick = {
-//                passwordVisibility = !passwordVisibility
-//            }) {
-//            }
-//            image?.let { Icon(imageVector = it, "") }
-//        },
-//    )
-//    if (showError) {
-//        element.attributes.errorMessage?.let {
-//            Text(
-//                text = it,
-//                color = MaterialTheme.colors.error,
-//                style = MaterialTheme.typography.caption,
-//                modifier = Modifier
-//                    .padding(start = 8.dp)
-//                    .fillMaxWidth()
-//            )
-//        }
-//    }
-//}*/
-
 @Composable
-fun BuildLabelView(element: UiElement, renderType: Constants.RenderType? = null, modifier: Modifier = Modifier) {
+fun BuildLabelView(
+    element: UiElement,
+    renderType: Constants.RenderType? = null,
+    modifier: Modifier = Modifier
+) {
     val properties = element.properties?.toProperties()
     element.text?.let {
         properties?.textStyle?.let { textStyle ->
@@ -303,11 +208,12 @@ fun BuildLabelView(element: UiElement, renderType: Constants.RenderType? = null,
                 text = it,
                 style = textStyle,
                 color = properties.foregroundColor ?: Color.Cyan,
-                modifier = getModifier(modifier, element, Constants.Element.LABEL)
+                modifier = modifier.applyModifier(element = element, type = Constants.Element.LABEL)
             )
         }
     }
 }
+
 
 @Composable
 fun BuildImageView(
@@ -330,17 +236,59 @@ fun BuildImageView(
                     )
                 }
             }
-        image?.let {
+        image?.let { it1 ->
             Image(
-                painter = it,
+                painter = it1,
                 contentScale = getImageContentScale(element.properties),
                 contentDescription = null,
-                modifier = getModifier(modifier, element, Constants.Element.IMAGE).clickable {
-                    performClick(mContext, element.properties?.isTapabble, element.id)
-                },
+                alignment = Alignment.Center,
+                modifier = modifier
+                    .applyModifier(
+                        element = element,
+                        type = Constants.Element.IMAGE
+                    )
+                    .clickable {
+                        performClick(mContext, element.properties?.isTapabble, element.id)
+                    }
             )
         }
     }
+}
+
+fun Modifier.applySize(element: UiElement?, type: Constants.Element): Modifier {
+    return if (element?.properties?.size?.width != null) {
+        this.size(
+            height = getHeightByType(type, element.properties.size.height?.dp),
+            width = element.properties.size.width.dp
+        )
+    } else {
+        this
+            .fillMaxWidth()
+            .height(getHeightByType(type, element?.properties?.size?.height?.dp))
+    }
+}
+
+fun Modifier.applyVerticalScroll(element: UiElement?): Modifier = composed {
+    if (element?.properties?.scrollEnabled == true) {
+        this
+            .verticalScroll(rememberScrollState())
+            .fillMaxHeight()
+    } else {
+        this
+    }
+}
+
+fun Modifier.applyModifier(element: UiElement?, type: Constants.Element): Modifier {
+    return this
+        .padding(
+            start = element?.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+            top = element?.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+            end = element?.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+            bottom = element?.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+        )
+        .applySize(element = element, type = type)
+        .clip(shape = RoundedCornerShape(element?.properties?.radius?.dp ?: 0.dp))
+//        .applyVerticalScroll(element = element)
 }
 
 fun getImageContentScale(properties: UiAttributes?): ContentScale =
@@ -351,29 +299,6 @@ fun getImageContentScale(properties: UiAttributes?): ContentScale =
     } else {
         ContentScale.None
     }
-
-
-fun getModifier(
-    modifier: Modifier,
-    element: UiElement,
-    type: Constants.Element,
-): Modifier = (element.properties?.size?.width?.let {
-    modifier.size(
-        height = getHeightByType(type, element.properties.size.height?.dp),
-        width = it.dp
-    )
-} ?: modifier
-    .fillMaxWidth(
-    )
-    .height(getHeightByType(type, element.properties?.size?.height?.dp)))
-    .padding(
-        start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
-        top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
-        end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
-        bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
-    )
-    .clip(shape = RoundedCornerShape(element.properties?.radius?.dp ?: 0.dp))
-
 
 fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
     propertiesHeight
@@ -407,12 +332,14 @@ fun performClick(mContext: Context, isTappable: Boolean?, id: String?) {
 fun BuildColumnView(element: UiElement, renderType: Constants.RenderType? = null) =
     BuildRenderTypeView(element = element, renderType, buildChildView = {
         Column(
-            modifier = Modifier.padding(
-                start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
-                top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
-                end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
-                bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
-            )
+            modifier = Modifier
+                .applyVerticalScroll(element = element)
+                .padding(
+                    start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+                    top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+                    end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+                    bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+                )
         ) {
             element.children?.forEach { BuildView(it) }
         }
@@ -428,7 +355,7 @@ fun BuildContainerView(
 ) {
     BuildRenderTypeView(element = element, renderType, buildChildView = {
         Row(
-            modifier = getModifier(modifier, element, Constants.Element.BUTTON),
+            modifier = Modifier.applyModifier(element = element, type = Constants.Element.BUTTON),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
@@ -467,61 +394,3 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     }
     return jsonString
 }
-
-/*//fun getScreenHeightWidth(context: Context): Pair<Float, Float> {
-//    val displayMetrics: DisplayMetrics = context.resources.displayMetrics
-//    val dpHeight = displayMetrics.heightPixels / displayMetrics.density
-//    val dpWidth = displayMetrics.widthPixels / displayMetrics.density
-//    return Pair(dpHeight, dpWidth)
-//}
-
-//@Composable
-//fun BuildListColumnView(element: UiElement, data: List<JsonObject?>) {
-//    ShowColumnList(element.children, data)
-//}
-
-//@Composable
-//fun ShowColumnList(itemView: List<UiElement>, data: List<JsonObject?>) {
-//    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-//        itemsIndexed(data) { index, _ ->
-//            ListRow(itemView = itemView, data[index])
-//            Divider()
-//        }
-//    }
-//}
-
-//@Composable
-//fun ShowRowList(itemView: List<UiElement>, data: List<JsonObject?>) {
-//    LazyRow(modifier = Modifier.fillMaxWidth()) {
-//        itemsIndexed(data) { index, _ ->
-//            ListRow(itemView = itemView, data = data[index])
-//            Divider()
-//        }
-//    }
-//}
-
-//@Composable
-//fun BuildListRowView(element: UiElement, data: List<JsonObject?>) {
-//    ShowRowList(element.children, data)
-//}
-
-//@Composable
-//fun ListRow(itemView: List<UiElement>, data: JsonObject?) {
-//    itemView.forEachIndexed { index, uiElement ->
-//        uiElement.attributes.text = data?.get(uiElement.attributes.jsonKey)?.asString ?: ""
-//        BuildView(uiElement)
-//    }
-//}*/
-
-        @Composable
-        fun Greeting(name: String) {
-            Text(text = "Hello $name!")
-        }
-
-        @Preview(showBackground = true)
-        @Composable
-        fun DefaultPreview() {
-            AndroidDynamicUxTheme {
-                Greeting("Android")
-            }
-        }
