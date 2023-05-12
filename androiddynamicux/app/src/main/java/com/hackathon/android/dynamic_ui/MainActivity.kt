@@ -9,13 +9,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -28,7 +27,6 @@ import com.hackathon.android.dynamic_ui.ui.theme.AndroiddynamicuxTheme
 import java.io.IOException
 
 private const val DEFAULT_IMAGE_HEIGHT = 160
-private const val DEFAULT_IMAGE_WIDTH = 160
 private const val DEFAULT_BUTTON_HEIGHT = 50
 private const val DEFAULT_PADDING = 0
 
@@ -76,6 +74,9 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
     val mContext = LocalContext.current
     Button(
         modifier = getModifier(modifier, element, Constants.Element.BUTTON),
+        colors = buttonColors(
+            containerColor = element.properties?.backgroundColor?.color ?: MaterialTheme.colors.primary
+        ),
         onClick = {
             performClick(mContext, element.properties?.isTapabble, element.id)
         }
@@ -83,6 +84,21 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
         element.title?.let { Text(text = it) }
     }
 }
+
+@Composable
+fun buttonColors(
+    containerColor: Color = MaterialTheme.colors.primary,
+    contentColor: Color = contentColorFor(containerColor),
+    disabledContainerColor: Color = MaterialTheme.colors.secondary.copy(alpha = 0.12f)
+        .compositeOver(MaterialTheme.colors.surface),
+    disabledContentColor: Color = MaterialTheme.colors.secondary
+        .copy(alpha = ContentAlpha.disabled)
+): ButtonColors = ButtonDefaults.buttonColors(
+    backgroundColor = containerColor,
+    contentColor = contentColor,
+    disabledBackgroundColor = disabledContainerColor,
+    disabledContentColor = disabledContentColor
+)
 
 //@Composable
 //fun BuildTextView(element: UiElement) {
@@ -372,3 +388,6 @@ fun DefaultPreview() {
         Greeting("Android")
     }
 }
+
+val String.color
+    get() = Color(android.graphics.Color.parseColor(this))
