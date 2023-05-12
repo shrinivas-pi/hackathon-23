@@ -9,13 +9,19 @@
         {
           "id": "maps",
           "type": "image",
-          "link": "",
+          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
           "properties": {
             "isTapabble": true,
-            "isNetworkLoadable": false,
+            "isNetworkLoadable": true,
             "size": {
-              "width": 20.0,
-              "height": 20.0
+              "height": 200.0,
+              "width": 200.0
+            },
+            "padding": {
+              "left": 16,
+              "right": 16,
+              "top": 16,
+              "bottom": 16
             }
           }
         },

@@ -19,12 +19,12 @@ data class UiAttributes(
     val backgroundColor: String,
     val padding: Padding,
     val radius: Int,
-    val size: Size,
+    val size: Size?,
 )
 
 data class Size(
-    val width: Double,
-    val height: Double
+    val width: Double?,
+    val height: Double?
 )
 
 data class Font(
