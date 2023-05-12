@@ -5,8 +5,9 @@
     {
       "id": "logo",
       "type": "image",
-      "link": "priceline_logo",
+      "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
       "properties": {
+        "isNetworkLoadable": true,
         "size": {
           "height": 100.0
         },
@@ -50,26 +51,38 @@
           "leftIcon": {
             "id": "searchIcon",
             "type": "image",
-            "link": "ic_calendar",
+            "link": "ic_search",
             "properties": {
               "isTapabble": true,
               "isNetworkLoadable": false,
               "size": {
-                "height": 16.0,
-                "width": 16.0
+                "height": 44.0,
+                "width": 44.0
+              },
+              "padding": {
+                "left": 8,
+                "right": 8,
+                "top": 8,
+                "bottom": 8
               }
             }
           },
           "rightIcon": {
             "id": "locationIcon",
             "type": "image",
-            "link": "locationIcon",
+            "link": "ic_gps_fixed",
             "properties": {
               "isTapabble": true,
               "isNetworkLoadable": false,
               "size": {
-                "height": 16.0,
-                "width": 16.0
+                "height": 44.0,
+                "width": 44.0
+              },
+              "padding": {
+                "left": 8,
+                "right": 8,
+                "top": 8,
+                "bottom": 8
               }
             }
           },
@@ -100,13 +113,100 @@
           "leftIcon": {
             "id": "calendarIcon",
             "type": "image",
-            "link": "calendarIcon",
+            "link": "ic_calendar",
             "properties": {
               "isTapabble": true,
               "isNetworkLoadable": false,
               "size": {
-                "height": 16.0,
-                "width": 16.0
+                "height": 44.0,
+                "width": 44.0
+              },
+              "padding": {
+                "left": 8,
+                "right": 8,
+                "top": 8,
+                "bottom": 8
+              }
+            }
+          },
+          "properties": {
+            "isTapabble": true,
+            "font": {
+              "size": 16,
+              "type": "normal"
+            },
+            "foregroundColor": "#001833",
+            "backgroundColor": "#EDF0F3",
+            "padding": {
+              "left": 16,
+              "right": 16,
+              "top": 4,
+              "bottom": 4
+            },
+            "size": {
+              "height": 50.0
+            },
+            "radius": 24
+          }
+        },
+        {
+          "id": "RoomPicker",
+          "type": "selectionPicker",
+          "placeHolder": "1 Room",
+          "leftIcon": {
+            "id": "keyIcon",
+            "type": "image",
+            "link": "ic_room_key",
+            "properties": {
+              "isTapabble": false,
+              "isNetworkLoadable": false,
+              "size": {
+                "height": 44.0,
+                "width": 44.0
+              },
+              "padding": {
+                "left": 8,
+                "right": 8,
+                "top": 8,
+                "bottom": 8
+              }
+            }
+          },
+          "rightIcon": {
+            "id": "plusIcon",
+            "type": "image",
+            "link": "ic_add_room",
+            "properties": {
+              "isTapabble": true,
+              "isNetworkLoadable": false,
+              "size": {
+                "height": 44.0,
+                "width": 44.0
+              },
+              "padding": {
+                "left": 8,
+                "right": 8,
+                "top": 8,
+                "bottom": 8
+              }
+            }
+          },
+          "rightSecondIcon": {
+            "id": "minusIcon",
+            "type": "image",
+            "link": "ic_remove_room",
+            "properties": {
+              "isTapabble": true,
+              "isNetworkLoadable": false,
+              "size": {
+                "height": 44.0,
+                "width": 44.0
+              },
+              "padding": {
+                "left": 8,
+                "right": 8,
+                "top": 8,
+                "bottom": 8
               }
             }
           },
@@ -156,8 +256,8 @@
         "interItemSpacing": 4,
         "backgroundColor": "#958489",
         "padding": {
-          "left": 16,
-          "right": 16,
+          "left": 8,
+          "right": 8,
           "top": 16,
           "bottom": 16
         },
@@ -255,6 +355,7 @@
   "properties": {
     "scrollEnabled": true,
     "isTapabble": true,
-    "interItemSpacing": 16
+    "interItemSpacing": 16,
+    "backgroundColor": "#FFFFFF"
   }
 }

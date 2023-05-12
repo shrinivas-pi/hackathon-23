@@ -16,7 +16,8 @@ fun UiAttributes?.toProperties() = ComposeProperties(
         fontSize = this?.font?.size?.sp ?: DEFAULT_TEXT_SIZE
     ),
     size = this?.size,
-    radius = this?.radius?.dp
+    radius = this?.radius?.dp,
+    isTapabble = this?.isTapabble ?: false
 )
 
 data class ComposeProperties(
@@ -24,7 +25,8 @@ data class ComposeProperties(
     val backgroundColor: Color,
     val textStyle: TextStyle,
     val size: Size?,
-    val radius: Dp?
+    val radius: Dp?,
+    val isTapabble: Boolean = false
 )
 
 val String.color

@@ -291,7 +291,7 @@ fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
 
 fun getAssetResourceId(mContext: Context, fileName: String): Int =
     mContext.resources.getIdentifier(
-        "ic_calendar",
+        fileName,
         "drawable",
         mContext.packageName
     )
@@ -331,9 +331,11 @@ fun BuildContainerView(element: UiElement, modifier: Modifier = Modifier) {
     ) {
         val properties = element.properties.toProperties()
         Container(
-            locationText = element.placeHolder,
-            leftIconId = R.drawable.ic_search_24,
-            rightIconId = R.drawable.ic_gps_fixed,
+            element = element,
+            placeHolderText = element.placeHolder,
+            leftIcon = element.leftIcon,
+            rightIcon = element.rightIcon,
+            rightSecondIcon = element.rightSecondIcon,
             onIcGpsClicked = {},
             properties = properties
         )

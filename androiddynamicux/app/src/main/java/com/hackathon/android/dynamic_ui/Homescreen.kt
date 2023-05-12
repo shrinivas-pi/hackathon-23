@@ -1,6 +1,5 @@
 package com.hackathon.android.dynamic_ui
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,53 +30,43 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.*
 import com.hackathon.android.dynamic_ui.ui.theme.DarkerBlue
 import com.hackathon.android.dynamic_ui.ui.theme.LightGray
-import com.hackathon.android.dynamic_ui.ui.theme.PricelineBlue
-
 
 @ExperimentalMaterialApi
 @Composable
 fun Container(
     modifier: Modifier = Modifier,
-    locationText: String?,
-    @DrawableRes leftIconId: Int?,
-    @DrawableRes rightIconId: Int?,
+    placeHolderText: String?,
+    leftIcon: UiElement?,
+    rightIcon: UiElement?,
+    rightSecondIcon: UiElement?,
+    element: UiElement?,
     properties: ComposeProperties?,
     onIcGpsClicked: () -> Unit
 ) {
+    val mContext = LocalContext.current
     AppSearchField(
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(properties?.radius ?: 8.dp),
         color = properties?.backgroundColor ?: LightGray,
-        onClick = {},
+        onClick = {
+            performClick(mContext, properties?.isTapabble, element?.id)
+        },
         contentStart = {
-            leftIconId?.let {
-                Icon(
-                    painter = painterResource(id = leftIconId),
-                    tint = PricelineBlue,
-                    contentDescription = null
-                )
+            leftIcon?.let {
+                BuildImageView(element = leftIcon)
             }
         },
         contentEnd = {
-            rightIconId?.let {
-                Crossfade(targetState = rightIconId) {
-                    IconButton(
-                        modifier = modifier,
-                        onClick = onIcGpsClicked
-                    ) {
-                        Icon(
-                            painter = painterResource(id = it),
-                            tint = PricelineBlue,
-                            contentDescription = null
-                        )
-                    }
-                }
-
+            rightSecondIcon?.let {
+                BuildImageView(element = rightSecondIcon)
+            }
+            rightIcon?.let {
+                BuildImageView(element = rightIcon)
             }
         }
     ) {
-        locationText?.let {
+        placeHolderText?.let {
             SearchFieldText(
                 text = it,
                 style = TextStyle(
