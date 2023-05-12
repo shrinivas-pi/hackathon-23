@@ -7,15 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -88,6 +80,7 @@ fun BuildView(element: UiElement) {
         Constants.Element.IMAGE.id -> BuildImageView(element = element, renderType)
         Constants.Element.SELECTION_PICKER.id -> BuildContainerView(element = element, renderType)
         Constants.Element.BUTTON.id -> BuildButtonView(element = element, renderType)
+        Constants.Element.BOX.id -> BuildBoxView(element = element)
         else -> {}//TODO("add other element cases here")
     }
 }
@@ -117,6 +110,7 @@ fun BuildCardView(
             bottomEnd = properties.shape.bottomEnd
         ),
         elevation = 5.dp,
+        enabled = false,
         onClick = {
             performClick(mContext, element.properties?.isTapabble, element.id)
         }
@@ -142,6 +136,18 @@ fun BuildRenderTypeView(
         else -> buildChildView()
     }
 
+}
+
+@Composable
+fun BuildBoxView(
+    element: UiElement,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.applyModifier(element = element, type = Constants.Element.COLUMN),
+    ) {
+        element.children?.forEach { BuildView(it) }
+    }
 }
 
 private fun String.getRenderType(): Constants.RenderType =
@@ -256,15 +262,23 @@ fun BuildImageView(
 }
 
 fun Modifier.applySize(element: UiElement?, type: Constants.Element): Modifier {
-    return if (element?.properties?.size?.width != null) {
+    return if (element?.properties?.size?.width != null && element.properties.size.height != null) {
         this.size(
-            height = getHeightByType(type, element.properties.size.height?.dp),
+            height = element.properties.size.height.dp,
             width = element.properties.size.width.dp
         )
+    } else if (element?.properties?.size?.width != null) {
+        this
+            .width(element.properties.size.width.dp)
+            .wrapContentHeight()
+    } else if (element?.properties?.size?.height != null) {
+        this
+            .height(element.properties.size.height.dp)
+            .fillMaxWidth()
     } else {
         this
+            .wrapContentHeight()
             .fillMaxWidth()
-            .height(getHeightByType(type, element?.properties?.size?.height?.dp))
     }
 }
 
@@ -288,7 +302,6 @@ fun Modifier.applyModifier(element: UiElement?, type: Constants.Element): Modifi
         )
         .applySize(element = element, type = type)
         .clip(shape = RoundedCornerShape(element?.properties?.radius?.dp ?: 0.dp))
-//        .applyVerticalScroll(element = element)
 }
 
 fun getImageContentScale(properties: UiAttributes?): ContentScale =
@@ -309,6 +322,7 @@ fun getHeightByType(type: Constants.Element, propertiesHeight: Dp?): Dp =
             is Constants.Element.ROW -> DEFAULT_BUTTON_HEIGHT.dp
             is Constants.Element.LABEL -> DEFAULT_TEXT_HEIGHT.dp
             is Constants.Element.SELECTION_PICKER -> DEFAULT_BUTTON_HEIGHT.dp
+            is Constants.Element.BOX-> DEFAULT_IMAGE_HEIGHT.dp
         }
 
 

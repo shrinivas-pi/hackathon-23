@@ -34,6 +34,11 @@ object Constants {
                 get() = "image"
         }
 
+        object BOX : Element {
+            override val id: String
+                get() = "box"
+        }
+
         object BUTTON : Element {
             override val id: String
                 get() = "button"

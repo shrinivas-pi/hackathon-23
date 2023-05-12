@@ -9,7 +9,7 @@
         {
           "id": "logo",
           "type": "image",
-          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
+          "link": "https://logodownload.org/wp-content/uploads/2022/08/priceline-logo-4.png",
           "properties": {
             "size": {
               "height": 50.0
@@ -37,9 +37,8 @@
               "height": 100.0
             },
             "padding": {
-              "left": 8,
-              "right": 8,
-              "top": 8,
+              "left": 16,
+              "right": 16,
               "bottom": 8
             },
             "radius": 8,
@@ -63,7 +62,7 @@
               },
               "padding": {
                 "left": 8,
-                "right": 8,
+                "right": 16,
                 "top": 8,
                 "bottom": 8
               },
@@ -104,11 +103,11 @@
             "foregroundColor": "#000000",
             "backgroundColor": "#F2F2F2",
             "size": {
-              "height": 50.0
+              "height": 45.0
             },
             "padding": {
-              "left": 8,
-              "right": 8,
+              "left": 16,
+              "right": 16,
               "top": 4,
               "bottom": 4
             },
@@ -153,13 +152,13 @@
             "foregroundColor": "#001833",
             "backgroundColor": "#EDF0F3",
             "padding": {
-              "left": 8,
-              "right": 8,
+              "left": 16,
+              "right": 16,
               "top": 4,
               "bottom": 4
             },
             "size": {
-              "height": 50.0
+              "height": 45.0
             },
             "radius": 24
           }
@@ -200,8 +199,6 @@
                 "width": 44.0
               },
               "padding": {
-                "left": 8,
-                "right": 8,
                 "top": 8,
                 "bottom": 8
               },
@@ -235,13 +232,13 @@
             "foregroundColor": "#001833",
             "backgroundColor": "#EDF0F3",
             "padding": {
-              "left": 8,
-              "right": 8,
+              "left": 16,
+              "right": 16,
               "top": 4,
               "bottom": 4
             },
             "size": {
-              "height": 50.0
+              "height": 45.0
             },
             "radius": 24
           }
@@ -256,12 +253,15 @@
               "size": 16,
               "type": "bold"
             },
+            "size": {
+              "height": 45.0
+            },
             "foregroundColor": "#FFFFFF",
             "backgroundColor": "#0068EF",
             "padding": {
-              "left": 8,
-              "right": 8,
-              "top": 4,
+              "left": 16,
+              "right": 16,
+              "top": 16,
               "bottom": 4
             },
             "radius": 24
@@ -273,15 +273,10 @@
         "backgroundColor": "#FFFFFF",
         "foregroundColor": "#FFFFFF",
         "padding": {
-          "left": 8,
-          "right": 8,
-          "bottom": 8,
-          "top": 8
+          "bottom": 8
         },
         "shape": {
-          "topStart": 16,
           "bottomStart": 16,
-          "topEnd": 16,
           "bottomEnd": 16
         },
         "radius": 16,
@@ -300,8 +295,8 @@
             "isTapabble": false,
             "isNetworkLoadable": false,
             "size": {
-              "width": 56,
-              "height": 56
+              "width": 40,
+              "height": 40
             },
             "padding": {
               "left": 16
@@ -418,6 +413,9 @@
               "size": 20,
               "type": "bold"
             },
+            "padding": {
+              "bottom": 4
+            },
             "foregroundColor": "#2B66E7"
           }
         },
@@ -452,6 +450,325 @@
         "size": {
           "width": 103,
           "height": 24.0
+        },
+        "alignment": "center",
+        "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
+        "radius": 16,
+        "padding": {
+          "left": 8,
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
+        },
+        "renderType": "card"
+      }
+    },
+    {
+      "id": "marketing_banner_1",
+      "type": "box",
+      "allowedActions": [
+        {
+          "type": "tap",
+          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+        }
+      ],
+      "children": [
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://web-assets.bcg.com/dims4/default/8e49d6f/2147483647/strip/true/crop/2880x755+0+775/resize/3600x944!/format/webp/quality/90/?url=http%3A%2F%2Fboston-consulting-group-brightspot.s3.amazonaws.com%2F8a%2Fd8%2F500c01484e0b974b3d7a03a5487c%2Fchicago-hero-image.jpg",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 120.0
+            },
+            "alignment": "center",
+            "fillView": true
+          }
+        },
+        {
+          "id": "bannerDetail",
+          "type": "text",
+          "text": "Chicago, IL",
+          "properties": {
+            "font": {
+              "size": 16,
+              "type": "bold"
+            },
+            "padding": {
+              "left": 16,
+              "bottom": 8,
+              "top": 85
+            },
+            "foregroundColor": "#FFFFFF"
+          }
+        }
+      ],
+      "properties": {
+        "interItemSpacing": 8,
+        "size": {
+        },
+        "alignment": "center",
+        "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
+        "radius": 16,
+        "padding": {
+          "left": 8,
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
+        },
+        "renderType": "card"
+      }
+    },
+    {
+      "id": "marketing_banner_2",
+      "type": "box",
+      "allowedActions": [
+        {
+          "type": "tap",
+          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+        }
+      ],
+      "children": [
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/8a/e0/b9/bellagio-las-vegas.jpg?w=1400&h=-1&s=1",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 120.0
+            },
+            "alignment": "center",
+            "fillView": true
+          }
+        },
+        {
+          "id": "bannerDetail",
+          "type": "text",
+          "text": "Las Vegas, NV",
+          "properties": {
+            "font": {
+              "size": 16,
+              "type": "bold"
+            },
+            "padding": {
+              "left": 16,
+              "bottom": 8,
+              "top": 85
+            },
+            "foregroundColor": "#FFFFFF"
+          }
+        }
+      ],
+      "properties": {
+        "interItemSpacing": 8,
+        "size": {
+        },
+        "alignment": "center",
+        "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
+        "radius": 16,
+        "padding": {
+          "left": 8,
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
+        }
+      }
+    },
+    {
+      "id": "marketing_banner_3",
+      "type": "box",
+      "allowedActions": [
+        {
+          "type": "tap",
+          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+        }
+      ],
+      "children": [
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://www.planetware.com/photos-large/USCA/california-san-francisco-golden-gate-bridge.jpg",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 120.0
+            },
+            "alignment": "center",
+            "fillView": true
+          }
+        },
+        {
+          "id": "bannerDetail",
+          "type": "text",
+          "text": "San Fransisco, CA",
+          "properties": {
+            "font": {
+              "size": 16,
+              "type": "bold"
+            },
+            "padding": {
+              "left": 16,
+              "bottom": 8,
+              "top": 85
+            },
+            "foregroundColor": "#FFFFFF"
+          }
+        }
+      ],
+      "properties": {
+        "interItemSpacing": 8,
+        "size": {
+        },
+        "alignment": "center",
+        "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
+        "radius": 16,
+        "padding": {
+          "left": 8,
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
+        },
+        "renderType": "card"
+      }
+    },
+    {
+      "id": "marketing_banner_4",
+      "type": "box",
+      "allowedActions": [
+        {
+          "type": "tap",
+          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+        }
+      ],
+      "children": [
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://s3.amazonaws.com/files.usmre.com/5905/Orlando1.jpeg",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 120.0
+            },
+            "alignment": "center",
+            "fillView": true
+          }
+        },
+        {
+          "id": "bannerDetail",
+          "type": "text",
+          "text": "Orlando, FL",
+          "properties": {
+            "font": {
+              "size": 16,
+              "type": "bold"
+            },
+            "padding": {
+              "left": 16,
+              "bottom": 8,
+              "top": 85
+            },
+            "foregroundColor": "#FFFFFF"
+          }
+        }
+      ],
+      "properties": {
+        "interItemSpacing": 8,
+        "size": {
+        },
+        "alignment": "center",
+        "backgroundColor": "#FFFFFF",
+        "foregroundColor": "#FFFFFF",
+        "radius": 16,
+        "padding": {
+          "left": 8,
+          "right": 8,
+          "bottom": 8,
+          "top": 8
+        },
+        "shape": {
+          "topStart": 16,
+          "bottomStart": 16,
+          "topEnd": 16,
+          "bottomEnd": 16
+        },
+        "renderType": "card"
+      }
+    },
+    {
+      "id": "marketing_banner_5",
+      "type": "box",
+      "allowedActions": [
+        {
+          "type": "tap",
+          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+        }
+      ],
+      "children": [
+        {
+          "id": "logo",
+          "type": "image",
+          "link": "https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,f_jpg,g_xy_center,h_1080,q_50,w_1920,x_1136,y_821/v1/clients/houston/ConventionDistrict1_1913488a-e5cb-4f91-92b9-f908db8ac1a5.jpg",
+          "properties": {
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 120.0
+            },
+            "alignment": "center",
+            "fillView": true
+          }
+        },
+        {
+          "id": "bannerDetail",
+          "type": "text",
+          "text": "Houston, TX",
+          "properties": {
+            "font": {
+              "size": 16,
+              "type": "bold"
+            },
+            "padding": {
+              "left": 16,
+              "bottom": 8,
+              "top": 85
+            },
+            "foregroundColor": "#FFFFFF"
+          }
+        }
+      ],
+      "properties": {
+        "interItemSpacing": 8,
+        "size": {
         },
         "alignment": "center",
         "backgroundColor": "#FFFFFF",
