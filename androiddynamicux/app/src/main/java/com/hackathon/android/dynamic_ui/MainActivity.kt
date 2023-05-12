@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -22,19 +23,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.hackathon.android.dynamic_ui.ui.theme.AndroiddynamicuxTheme
 import java.io.IOException
 
 private const val DEFAULT_IMAGE_HEIGHT = 160
 private const val DEFAULT_IMAGE_WIDTH = 160
+private const val DEFAULT_PADDING = 0
 
 class MainActivity : ComponentActivity() {
 
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
 //LIST, IMAGE_VIEW,
 @Composable
-fun BuildView(element: UiElement, data: List<JsonObject?>? = null) = when (element.type) {
+fun BuildView(element: UiElement) = when (element.type) {
     Constants.Element.COLUMN -> BuildColumnView(element = element)
     Constants.Element.ROW -> BuildRowView(element = element)
     Constants.Element.LABEL -> BuildLabelView(element = element)
@@ -81,7 +81,7 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         onClick = { /*TODO*/ }
     ) {
-        Text(text = element.title)
+        element.title?.let { Text(text = it) }
     }
 }
 
@@ -196,30 +196,34 @@ fun BuildButtonView(element: UiElement, modifier: Modifier = Modifier) {
 
 @Composable
 fun BuildLabelView(element: UiElement) {
-    Text(text = element.text)
+    element.text?.let { Text(text = it) }
 }
 
 @Composable
 fun BuildImageView(element: UiElement) {
     val mContext = LocalContext.current
-    element.link.takeIf { it.isNotBlank() }?.let {
+    element.link.takeIf { it?.isNotBlank() == true }?.let {
         val image =
-            if (element.properties.isNetworkLoadable) {
+            if (element.properties?.isNetworkLoadable == true) {
                 rememberAsyncImagePainter(element.link)
             } else {
-                rememberDrawablePainter(getAssetResourceId(mContext, element.link))
+                rememberDrawablePainter(element.link?.let { it1 ->
+                    getAssetResourceId(mContext,
+                        it1
+                    )
+                })
             }
         Image(
             painter = image,
             contentDescription = null,
             modifier = Modifier
                 .size(
-                    height = element.properties.size?.height?.dp ?: DEFAULT_IMAGE_HEIGHT.dp,
-                    width = element.properties.size?.width?.dp ?: DEFAULT_IMAGE_WIDTH.dp
+                    height = element.properties?.size?.height?.dp ?: DEFAULT_IMAGE_HEIGHT.dp,
+                    width = element.properties?.size?.width?.dp ?: DEFAULT_IMAGE_WIDTH.dp
                 )
                 .clickable {
-                    if (element.properties.isTapabble)
-                        performClick(mContext, element.id)
+                    if (element.properties?.isTapabble == true)
+                        element.id?.let { it1 -> performClick(mContext, it1) }
                 },
         )
     }
@@ -248,14 +252,14 @@ fun BuildColumnView(element: UiElement) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-//        modifier = Modifier.padding(
-//            start = element.properties.padding.left.dp,
-//            top = element.properties.padding.top.dp,
-//            end = element.properties.padding.right.dp,
-//            bottom = element.properties.padding.bottom.dp
-//        )
+        modifier = Modifier.padding(
+            start = element.properties?.padding?.left?.dp ?: DEFAULT_PADDING.dp,
+            top = element.properties?.padding?.top?.dp ?: DEFAULT_PADDING.dp,
+            end = element.properties?.padding?.right?.dp ?: DEFAULT_PADDING.dp,
+            bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
+        )
     ) {
-        element.children.forEach { BuildView(it) }
+        element.children?.forEach { BuildView(it) }
     }
 }
 
@@ -265,7 +269,7 @@ fun BuildRowView(element: UiElement) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
     ) {
-        element.children.forEach { BuildView(it) }
+        element.children?.forEach { BuildView(it) }
     }
 }
 

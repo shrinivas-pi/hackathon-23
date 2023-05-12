@@ -134,10 +134,20 @@
         {
           "id": "vipTierImage",
           "type": "image",
-          "link": "tierImage",
+          "link": "https://press.priceline.com/wp-content/uploads/2019/10/Priceline_Logo_RGB_Blue_2019-1-1.png",
           "properties": {
             "isTapabble": false,
-            "isNetworkLoadable": false
+            "isNetworkLoadable": true,
+            "size": {
+              "height": 100.0,
+              "width": 100.0
+            },
+            "padding": {
+              "left": 16,
+              "right": 16,
+              "top": 16,
+              "bottom": 16
+            }
           }
         },
         {

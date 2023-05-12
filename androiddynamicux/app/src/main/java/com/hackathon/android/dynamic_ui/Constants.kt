@@ -15,7 +15,7 @@ object Constants {
         companion object {
             const val COLUMN = "vContainer"
             const val ROW = "hContainer"
-            const val LABEL = "label"
+            const val LABEL = "text"
             const val IMAGE = "image"
 //            const val TEXT = "text"
 //            const val FULL_WIDTH_TEXT = "full-width-text"
