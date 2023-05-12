@@ -12,14 +12,14 @@ import androidx.compose.ui.unit.sp
 private val DEFAULT_TEXT_SIZE = 16.sp
 private val DEFAULT_RADIUS = 8.dp
 
-fun UiAttributes.toProperties() = ComposeProperties(
-    foregroundColor = Color(android.graphics.Color.parseColor(this.foregroundColor)),
-    backgroundColor = this.backgroundColor?.let {
+fun UiAttributes?.toProperties() = ComposeProperties(
+    foregroundColor = Color(android.graphics.Color.parseColor(this?.foregroundColor)),
+    backgroundColor = this?.backgroundColor?.let {
         Color(android.graphics.Color.parseColor(this.backgroundColor))
     },
     textStyle = TextStyle(
-        fontSize = this.font?.size?.sp ?: DEFAULT_TEXT_SIZE,
-        fontWeight = this.font?.type.toFontType(),
+        fontSize = this?.font?.size?.sp ?: DEFAULT_TEXT_SIZE,
+        fontWeight = this?.font?.type.toFontType(),
         fontFamily = RobotoFontFamily
     ),
     size = this?.size,
@@ -28,7 +28,7 @@ fun UiAttributes.toProperties() = ComposeProperties(
     isTapabble = this?.isTapabble ?: false
 )
 
-private fun String?.toFontType(): FontWeight = when(this) {
+private fun String?.toFontType(): FontWeight = when (this) {
     "bold" -> FontWeight.Bold
     "medium" -> FontWeight.Medium
     else -> FontWeight.Normal
