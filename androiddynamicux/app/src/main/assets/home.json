@@ -345,8 +345,14 @@
               "id": "loginButton",
               "type": "text",
               "text": "Sign Up",
+              "allowedActions": [
+                {
+                  "type": "tap",
+                  "deeplink": "https://www.priceline.com/?refclickid=&action=signup"
+                }
+              ],
               "properties": {
-                "deeplink": "pclnnegotiator://signup",
+                "deeplink": "https://www.priceline.com/?refclickid=&action=signup",
                 "isTapabble": true,
                 "titleAlignment": "left",
                 "font": {
