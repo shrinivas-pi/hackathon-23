@@ -23,6 +23,12 @@
                 {
                     "id": "vipBanner",
                     "type": "hContainer",
+                    "allowedActions": [
+                        {
+                            "type": "tap",
+                            "deeplink": "http://www.priceline.com/r/app/?channel=email&theme=theme1&product=none&action=home"
+                        }
+                    ],
                     "children": [
                         {
                             "id": "vipTierImage",
@@ -83,7 +89,7 @@
                                     "type": "text",
                                     "text": "Sign Up",
                                     "properties": {
-                                        "deeplink": "pclnnegotiator://signup",
+                                        "deeplink": "https://www.priceline.com/r/app/?channel=email&theme=theme&product=air&action=signup",
                                         "isTapabble": true,
                                         "titleAlignment": "left",
                                         "font": {
@@ -400,7 +406,7 @@
             "allowedActions": [
                 {
                     "type": "tap",
-                    "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+                    "deeplink": "https://experiences.priceline.com/us/new-york/empire-state-building-v"
                 }
             ],
             "children": [

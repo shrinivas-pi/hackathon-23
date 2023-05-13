@@ -140,7 +140,8 @@
           },
           "allowedActions": [
             {
-              "type": "tap"
+              "type": "tap",
+              "deeplink": "datePicker"
             }
           ],
           "properties": {
@@ -345,8 +346,14 @@
               "id": "loginButton",
               "type": "text",
               "text": "Sign Up",
+              "allowedActions": [
+                {
+                  "type": "tap",
+                  "deeplink": "negotiator://signup"
+                }
+              ],
               "properties": {
-                "deeplink": "pclnnegotiator://signup",
+                "deeplink": "negotiator://signup",
                 "isTapabble": true,
                 "titleAlignment": "left",
                 "font": {

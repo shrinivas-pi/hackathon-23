@@ -13,7 +13,9 @@ private val DEFAULT_TEXT_SIZE = 16.sp
 private val DEFAULT_RADIUS = 8.dp
 
 fun UiAttributes?.toProperties() = ComposeProperties(
-    foregroundColor = Color(android.graphics.Color.parseColor(this?.foregroundColor)),
+    foregroundColor = this?.foregroundColor?.let {
+        Color(android.graphics.Color.parseColor(this.foregroundColor))
+    },
     backgroundColor = this?.backgroundColor?.let {
         Color(android.graphics.Color.parseColor(this.backgroundColor))
     },
@@ -61,7 +63,7 @@ data class UiShape(
 val String.color
     get() = Color(android.graphics.Color.parseColor(this))
 
-private val RobotoFontFamily = FontFamily(
+val RobotoFontFamily = FontFamily(
     fonts = listOf(
         Font(
             resId = R.font.roboto_regular,

@@ -1,24 +1,18 @@
 package com.hackathon.android.dynamic_ui
 
+import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,16 +31,19 @@ import com.hackathon.android.dynamic_ui.ui.theme.DarkerBlue
 import com.hackathon.android.dynamic_ui.ui.theme.LightGray
 import java.time.LocalDate
 import androidx.compose.material.*
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.util.Pair
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavHostController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.time.ZoneId
-import java.time.ZoneOffset.UTC
 import java.time.ZonedDateTime
+import java.util.*
 
 @ExperimentalMaterialApi
 @Composable
@@ -57,7 +54,9 @@ fun Container(
     rightIcon: UiElement?,
     rightSecondIcon: UiElement?,
     element: UiElement?,
-    properties: ComposeProperties?
+    properties: ComposeProperties?,
+    navController: NavHostController,
+    selectedDateText: MutableState<String>
 ) {
     val mContext = LocalContext.current
     AppSearchField(
@@ -66,29 +65,33 @@ fun Container(
         shape = RoundedCornerShape(properties?.radius ?: 8.dp),
         color = properties?.backgroundColor ?: LightGray,
         onClick = {
-            performClick(mContext, properties?.isTapabble, element?.id)
+            val deeplink = element?.allowedActions?.find { it?.type == "tap" }?.deeplink
+            performClick(mContext, properties?.isTapabble, element?.id, deeplink, navController)
         },
         contentStart = {
             leftIcon?.let {
-                BuildImageView(element = leftIcon)
+                BuildImageView(element = leftIcon, navController = navController)
             }
         },
         contentEnd = {
             rightSecondIcon?.let {
-                BuildImageView(element = rightSecondIcon)
+                BuildImageView(element = rightSecondIcon, navController = navController)
             }
             rightIcon?.let {
-                BuildImageView(element = rightIcon)
+                BuildImageView(element = rightIcon, navController = navController)
             }
         }
     ) {
         placeHolderText?.let {
-            SearchFieldText(
-                text = it,
+            Text(
+                text = if (selectedDateText.value.isEmpty()) it else selectedDateText.value,
+                modifier = modifier,
+                color = properties?.foregroundColor ?: DarkerBlue,
+                maxLines = 1,
                 style = TextStyle(
                     fontSize = properties?.textStyle?.fontSize ?: 16.sp
                 ),
-                color = properties?.foregroundColor ?: DarkerBlue
+                fontFamily = RobotoFontFamily
             )
         }
     }
@@ -99,8 +102,8 @@ fun Container(
 fun AppSearchField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape,
-    color: Color,
+    shape: Shape = RoundedCornerShape(8.dp),
+    color: Color = LightGray,
     elevation: Dp = 2.dp,
     border: BorderStroke? = null,
     onClick: () -> Unit,
@@ -170,18 +173,7 @@ fun AppText(
         lineHeight = 18.sp
     )
 ) {
-    Text(
-        modifier = modifier,
-        text = text,
-        color = color,
-        textDecoration = textDecoration,
-        fontWeight = fontWeight,
-        textAlign = textAlign,
-        overflow = overflow,
-        softWrap = softWrap,
-        maxLines = maxLines,
-        style = style
-    )
+
 }
 
 @ExperimentalMaterialApi
@@ -313,60 +305,20 @@ private fun ConstraintLayoutScope.ContentEnd(
 
 @Composable
 fun RangeDatePicker(
-    display: Boolean,
-    selectionStart: ZonedDateTime,
-    selectionEnd: ZonedDateTime,
-    visibleMonthStart: LocalDate? = null,
-    visibleMonthEnd: LocalDate? = null,
-    onDismissRequest: () -> Unit
+    onClick: (selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int) -> Unit
 ) {
-    if (display) {
-        val fragmentManager = (LocalContext.current as? FragmentActivity)?.supportFragmentManager ?: return
-        rangeDatePicker(
-            fragmentManager,
-            selectionStart,
-            selectionEnd,
-            visibleMonthStart,
-            visibleMonthEnd
-        )
-    }
-}
+    val mContext = LocalContext.current
+    val calendar = Calendar.getInstance()
 
-
-fun rangeDatePicker(
-    fragmentManager: FragmentManager,
-    selectionStart: ZonedDateTime = ZonedDateTime.now(),
-    selectionEnd: ZonedDateTime = ZonedDateTime.now(),
-    visibleMonthStart: LocalDate? = LocalDate.now(),
-    visibleMonthEnd: LocalDate? = LocalDate.now(),
-    onDismissRequest: () -> Unit = {},
-) {
-
-    MaterialDatePicker.Builder
-        .dateRangePicker()
-        .setTheme(R.style.Theme_Androiddynamicux)
-        .setSelection(Pair(selectionStart.toLong(), selectionEnd.toLong()))
-        .setCalendarConstraints(
-            CalendarConstraints.Builder().apply {
-                visibleMonthStart?.let { setStart(it.toEpochMillis()) }
-                visibleMonthEnd?.let { setEnd(it.toEpochMillis()) }
-            }.build()
-        )
-        .build()
-        .apply {
-            addOnCancelListener { onDismissRequest() }
-            addOnDismissListener { onDismissRequest() }
-            addOnPositiveButtonClickListener {  }
-            show(fragmentManager, "")
-        }
-}
-
-fun LocalDate.toEpochMillis() =
-    this.atStartOfDay(ZoneId.systemDefault())
-        .toInstant()
-        .toEpochMilli()
-
-internal fun ZonedDateTime.toLong(): Long {
-    val zonedTime = ZonedDateTime.of(this.toLocalDate().atStartOfDay(), ZoneId.of("UTC"))
-    return zonedTime.toInstant().toEpochMilli()
+// Fetching current year, month and day
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH]
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+    val datePicker = DatePickerDialog(
+        mContext,
+        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+            onClick.invoke(selectedYear, selectedMonth, selectedDayOfMonth)
+        }, year, month, dayOfMonth
+    )
+    datePicker.show()
 }

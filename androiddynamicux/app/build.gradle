@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-
+    def nav_version = "2.5.3"
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -77,4 +77,5 @@ dependencies {
     implementation "com.google.accompanist:accompanist-systemuicontroller:$compose_accompanist"
     implementation "com.google.accompanist:accompanist-drawablepainter:$compose_accompanist"
     implementation 'androidx.compose.foundation:foundation:1.4.3'
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 }

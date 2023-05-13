@@ -76,5 +76,15 @@ object Constants {
                 get() = "datePicker"
 
         }
+        object Banner : Actions {
+            override val id: String
+                get() = "vipBanner"
+
+        }
+        object Login : Actions {
+            override val id: String
+                get() = "loginButton"
+
+        }
     }
 }

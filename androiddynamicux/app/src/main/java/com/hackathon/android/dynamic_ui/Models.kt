@@ -11,7 +11,13 @@ data class UiElement(
     val placeHolder: String?,
     val rightIcon: UiElement?,
     val leftIcon: UiElement?,
-    val rightSecondIcon: UiElement?
+    val rightSecondIcon: UiElement?,
+    val allowedActions: List<AllowedActions?>? = emptyList()
+)
+
+data class AllowedActions(
+    val type: String?,
+    val deeplink: String?
 )
 
 data class UiAttributes(
@@ -27,7 +33,8 @@ data class UiAttributes(
     val fillView: Boolean?,
     val fitInside: Boolean?,
     val renderType: String?,
-    val shape: Shape?
+    val shape: Shape?,
+    val deeplink: String?
 )
 
 data class Size(
