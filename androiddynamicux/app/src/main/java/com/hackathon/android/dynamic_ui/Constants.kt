@@ -86,5 +86,17 @@ object Constants {
                 get() = "loginButton"
 
         }
+
+        object PlusIcon : Actions {
+            override val id: String
+                get() = "plusIcon"
+
+        }
+
+        object MinusIcon : Actions {
+            override val id: String
+                get() = "minusIcon"
+
+        }
     }
 }

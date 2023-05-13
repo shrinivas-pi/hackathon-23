@@ -29,20 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.*
 import com.hackathon.android.dynamic_ui.ui.theme.DarkerBlue
 import com.hackathon.android.dynamic_ui.ui.theme.LightGray
-import java.time.LocalDate
-import androidx.compose.material.*
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.core.util.Pair
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.navigation.NavHostController
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.*
 
 @ExperimentalMaterialApi
@@ -56,7 +44,7 @@ fun Container(
     element: UiElement?,
     properties: ComposeProperties?,
     navController: NavHostController,
-    selectedDateText: MutableState<String>
+    selectedText: SnapshotStateMap<String, String>
 ) {
     val mContext = LocalContext.current
     AppSearchField(
@@ -66,25 +54,47 @@ fun Container(
         color = properties?.backgroundColor ?: LightGray,
         onClick = {
             val deeplink = element?.allowedActions?.find { it?.type == "tap" }?.deeplink
-            performClick(mContext, properties?.isTapabble, element?.id, deeplink, navController)
+            performClick(
+                mContext,
+                properties?.isTapabble,
+                element?.id,
+                deeplink,
+                navController,
+                selectedText
+            )
         },
         contentStart = {
             leftIcon?.let {
-                BuildImageView(element = leftIcon, navController = navController)
+                BuildImageView(
+                    element = leftIcon,
+                    navController = navController,
+                    selectedText = selectedText,
+                    parentId = element?.id
+                )
             }
         },
         contentEnd = {
             rightSecondIcon?.let {
-                BuildImageView(element = rightSecondIcon, navController = navController)
+                BuildImageView(
+                    element = rightSecondIcon,
+                    navController = navController,
+                    selectedText = selectedText,
+                    parentId = element?.id
+                )
             }
             rightIcon?.let {
-                BuildImageView(element = rightIcon, navController = navController)
+                BuildImageView(
+                    element = rightIcon,
+                    navController = navController,
+                    selectedText = selectedText,
+                    parentId = element?.id
+                )
             }
         }
     ) {
         placeHolderText?.let {
             Text(
-                text = if (selectedDateText.value.isEmpty()) it else selectedDateText.value,
+                text = if (selectedText[element?.id]?.isEmpty() == true) it else selectedText[element?.id] ?: it,
                 modifier = modifier,
                 color = properties?.foregroundColor ?: DarkerBlue,
                 maxLines = 1,

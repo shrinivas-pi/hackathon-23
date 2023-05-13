@@ -23,9 +23,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -86,30 +85,59 @@ class MainActivity : ComponentActivity() {
 fun BuildView(
     element: UiElement,
     navController: NavHostController,
-    selectedDateText: MutableState<String>
+    selectedText: SnapshotStateMap<String, String>
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val renderType = element.properties?.renderType?.getRenderType()
     when (element.type) {
-        Constants.Element.COLUMN.id -> BuildColumnView(element = element, renderType, navController, selectedDateText)
-        Constants.Element.ROW.id -> BuildRowView(element = element, renderType, navController = navController, selectedDateText)
-        Constants.Element.LABEL.id -> BuildLabelView(element = element, renderType, navController = navController)
+        Constants.Element.COLUMN.id -> BuildColumnView(
+            element = element,
+            renderType,
+            navController,
+            selectedText
+        )
+
+        Constants.Element.ROW.id -> BuildRowView(
+            element = element,
+            renderType,
+            navController = navController,
+            selectedText
+        )
+
+        Constants.Element.LABEL.id -> BuildLabelView(
+            element = element,
+            renderType,
+            navController = navController,
+            selectedText = selectedText
+        )
+
         Constants.Element.IMAGE.id -> BuildImageView(
             element = element,
             renderType,
-            navController = navController
+            navController = navController,
+            selectedText = selectedText,
+            parentId = element?.id
         )
+
         Constants.Element.SELECTION_PICKER.id -> BuildContainerView(
             element = element,
             renderType,
             navController = navController,
-            selectedDateText = selectedDateText
+            selectedText = selectedText
         )
+
         Constants.Element.BUTTON.id -> BuildButtonView(
             element = element, renderType,
-            navController = navController
+            navController = navController,
+            selectedText = selectedText
         )
-        Constants.Element.BOX.id -> BuildBoxView(element = element, navController = navController)
+
+        Constants.Element.BOX.id -> BuildBoxView(
+            element = element,
+            navController = navController,
+            selectedDateText = selectedText
+        )
+
         else -> {}//TODO("add other element cases here")
     }
     val observer = remember(lifecycleOwner) {
@@ -129,7 +157,8 @@ fun BuildCardView(
     element: UiElement,
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    buildChildView: @Composable () -> Unit
+    buildChildView: @Composable () -> Unit,
+    selectedText: SnapshotStateMap<String, String>
 ) {
     val mContext = LocalContext.current
     val properties = element.properties.toProperties()
@@ -157,7 +186,8 @@ fun BuildCardView(
                 element.properties?.isTapabble,
                 element.id,
                 deeplink,
-                navController
+                navController,
+                selectedText
             )
         }
     ) {
@@ -170,13 +200,15 @@ fun BuildRenderTypeView(
     element: UiElement,
     renderType: Constants.RenderType?,
     navController: NavHostController,
-    buildChildView: @Composable () -> Unit
+    buildChildView: @Composable () -> Unit,
+    selectedText: SnapshotStateMap<String, String>
 ) {
     when (renderType) {
         is Constants.RenderType.CARD -> BuildCardView(
             element,
             buildChildView = buildChildView,
-            navController = navController
+            navController = navController,
+            selectedText = selectedText
         )
 
         is Constants.RenderType.IMAGE -> buildChildView()
@@ -190,12 +222,19 @@ fun BuildRenderTypeView(
 fun BuildBoxView(
     element: UiElement,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    selectedDateText: SnapshotStateMap<String, String>
 ) {
     Box(
         modifier = modifier.applyModifier(element = element, type = Constants.Element.COLUMN),
     ) {
-        element.children?.forEach { BuildView(it, navController = navController, mutableStateOf("")) }
+        element.children?.forEach {
+            BuildView(
+                it,
+                navController = navController,
+                selectedText = selectedDateText
+            )
+        }
     }
 }
 
@@ -212,7 +251,8 @@ fun BuildButtonView(
     element: UiElement,
     renderType: Constants.RenderType?,
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedText: SnapshotStateMap<String, String>
 ) {
     val mContext = LocalContext.current
     val properties = element.properties?.toProperties()
@@ -228,7 +268,8 @@ fun BuildButtonView(
                 mContext,
                 element.properties?.isTapabble,
                 element.id,
-                navController = navController
+                navController = navController,
+                selectedText = selectedText
             )
         }
     ) {
@@ -263,7 +304,8 @@ fun BuildLabelView(
     element: UiElement,
     renderType: Constants.RenderType? = null,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    selectedText: SnapshotStateMap<String, String>
 ) {
     val mContext = LocalContext.current
     val properties = element.properties?.toProperties()
@@ -273,17 +315,19 @@ fun BuildLabelView(
                 text = it,
                 style = textStyle,
                 color = properties.foregroundColor ?: Color.Cyan,
-                modifier = modifier.applyModifier(element = element, type = Constants.Element.LABEL)
-                .clickable (onClick = {
-                    val deeplink = element.properties.deeplink ?: ""
-                    performClick(
-                        isTappable = element.properties.isTapabble,
-                        id = element.id,
-                        navController = navController,
-                        deeplink = deeplink,
-                        mContext = mContext
-                    )
-                })
+                modifier = modifier
+                    .applyModifier(element = element, type = Constants.Element.LABEL)
+                    .clickable(onClick = {
+                        val deeplink = element.properties.deeplink ?: ""
+                        performClick(
+                            mContext = mContext,
+                            isTappable = element.properties.isTapabble,
+                            id = element.id,
+                            deeplink = deeplink,
+                            navController = navController,
+                            selectedText = selectedText
+                        )
+                    })
             )
         }
     }
@@ -295,7 +339,9 @@ fun BuildImageView(
     element: UiElement,
     renderType: Constants.RenderType? = null,
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    selectedText: SnapshotStateMap<String, String>,
+    parentId: String?
 ) {
     val mContext = LocalContext.current
     element.link.takeIf { it?.isNotBlank() == true }?.let {
@@ -331,7 +377,9 @@ fun BuildImageView(
                             element.properties?.isTapabble,
                             element.id,
                             deeplink,
-                            navController
+                            navController,
+                            selectedText,
+                            parentId
                         )
                     }
             )
@@ -417,13 +465,34 @@ fun performClick(
     isTappable: Boolean?,
     id: String?,
     deeplink: String? = null,
-    navController: NavHostController
+    navController: NavHostController,
+    selectedText: SnapshotStateMap<String, String>,
+    parentId: String? = null
 ) {
     isTappable.takeIf { it == true && id != null }?.let {
         when (id) {
             Constants.Actions.DatePicker.id -> {
-                deeplink?.let { link -> navController.navigate(link) }
+                deeplink?.let { link -> navController.navigate(route = "$link/${id}") }
             }
+
+            Constants.Actions.PlusIcon.id -> {
+                val room = selectedText[parentId]?.split(" ")?.get(0)
+                if ((room?.toInt() ?: 0) > 0) {
+                    selectedText[parentId?:""] = "${room?.toInt()?.plus(1)} Room"
+                } else {
+                    selectedText[parentId?:""] = "1 Room"
+                }
+            }
+
+            Constants.Actions.MinusIcon.id -> {
+                val room = selectedText[parentId]?.split(" ")?.get(0)
+                if ((room?.toInt() ?: 0) > 1) {
+                    selectedText[parentId?:""] = "${room?.toInt()?.minus(1)} Room"
+                } else {
+                    selectedText[parentId?:""] = "1 Room"
+                }
+            }
+
             Constants.Actions.Login.id -> {
                 deeplink?.let {
                     val intent = Intent(
@@ -434,6 +503,7 @@ fun performClick(
                     navController.popBackStack()
                 }
             }
+
             else -> {}
         }
     }
@@ -444,10 +514,9 @@ fun BuildColumnView(
     element: UiElement,
     renderType: Constants.RenderType? = null,
     navController: NavHostController,
-    selectedDateText: MutableState<String>
+    selectedText: SnapshotStateMap<String, String>
 ) =
     BuildRenderTypeView(element = element, renderType, buildChildView = {
-        val mContext = LocalContext.current
         Column(
             modifier = Modifier
                 .applyVerticalScroll(element = element)
@@ -458,9 +527,9 @@ fun BuildColumnView(
                     bottom = element.properties?.padding?.bottom?.dp ?: DEFAULT_PADDING.dp
                 )
         ) {
-            element.children?.forEach { BuildView(it, navController, mutableStateOf("")) }
+            element.children?.forEach { BuildView(it, navController, selectedText = selectedText) }
         }
-    }, navController = navController)
+    }, navController = navController, selectedText = selectedText)
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -470,7 +539,7 @@ fun BuildContainerView(
     renderType: Constants.RenderType? = null,
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    selectedDateText: MutableState<String>
+    selectedText: SnapshotStateMap<String, String>
 ) {
     BuildRenderTypeView(element = element, renderType, buildChildView = {
         Row(
@@ -487,10 +556,10 @@ fun BuildContainerView(
                 rightSecondIcon = element.rightSecondIcon,
                 properties = properties,
                 navController = navController,
-                selectedDateText = selectedDateText
+                selectedText = selectedText
             )
         }
-    }, navController = navController)
+    }, navController = navController, selectedText = selectedText)
 }
 
 @Composable
@@ -498,16 +567,16 @@ fun BuildRowView(
     element: UiElement,
     renderType: Constants.RenderType? = null,
     navController: NavHostController,
-    selectedDateText: MutableState<String>
+    selectedText: SnapshotStateMap<String, String>
 ) {
     BuildRenderTypeView(element = element, renderType, buildChildView = {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            element.children?.forEach { BuildView(it, navController, selectedDateText) }
+            element.children?.forEach { BuildView(it, navController, selectedText) }
         }
-    }, navController = navController)
+    }, navController = navController, selectedText = selectedText)
 }
 
 fun getJsonDataFromAsset(context: Context, fileName: String): String? {
