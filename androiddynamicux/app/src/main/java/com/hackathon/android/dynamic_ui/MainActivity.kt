@@ -475,21 +475,25 @@ fun performClick(
                 deeplink?.let { link -> navController.navigate(route = "$link/${id}") }
             }
 
+            Constants.Actions.LocationPicker.id -> {
+                deeplink?.let { link -> navController.navigate(route = "$link/${true}") }
+            }
+
             Constants.Actions.PlusIcon.id -> {
                 val room = selectedText[parentId]?.split(" ")?.get(0)
                 if ((room?.toInt() ?: 0) > 0) {
-                    selectedText[parentId?:""] = "${room?.toInt()?.plus(1)} Room"
+                    selectedText[parentId ?: ""] = "${room?.toInt()?.plus(1)} Room"
                 } else {
-                    selectedText[parentId?:""] = "1 Room"
+                    selectedText[parentId ?: ""] = "1 Room"
                 }
             }
 
             Constants.Actions.MinusIcon.id -> {
                 val room = selectedText[parentId]?.split(" ")?.get(0)
                 if ((room?.toInt() ?: 0) > 1) {
-                    selectedText[parentId?:""] = "${room?.toInt()?.minus(1)} Room"
+                    selectedText[parentId ?: ""] = "${room?.toInt()?.minus(1)} Room"
                 } else {
-                    selectedText[parentId?:""] = "1 Room"
+                    selectedText[parentId ?: ""] = "1 Room"
                 }
             }
 
@@ -503,8 +507,26 @@ fun performClick(
                     navController.popBackStack()
                 }
             }
-
-            else -> {}
+            Constants.Actions.Banners.id -> {
+                deeplink?.let {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(deeplink)
+                    )
+                    mContext.startActivity(intent)
+                    navController.popBackStack()
+                }
+            }
+            else -> {
+                deeplink?.let {
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(deeplink)
+                    )
+                    mContext.startActivity(intent)
+                    navController.popBackStack()
+                }
+            }
         }
     }
 }
@@ -548,6 +570,7 @@ fun BuildContainerView(
             horizontalArrangement = Arrangement.Center,
         ) {
             val properties = element.properties.toProperties()
+            val id: String = element.id ?: ""
             Container(
                 element = element,
                 placeHolderText = element.placeHolder,
@@ -556,7 +579,14 @@ fun BuildContainerView(
                 rightSecondIcon = element.rightSecondIcon,
                 properties = properties,
                 navController = navController,
-                selectedText = selectedText
+                selectedText = selectedText,
+                onClick = {
+                    selectedText[id] = it
+                },
+                onClickCalendar = { selectedYear, selectedMonth, selectedDayOfMonth ->
+                    selectedText[id] =
+                        "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+                }
             )
         }
     }, navController = navController, selectedText = selectedText)

@@ -76,6 +76,11 @@ object Constants {
                 get() = "datePicker"
 
         }
+        object LocationPicker : Actions {
+            override val id: String
+                get() = "locationPicker"
+
+        }
         object Banner : Actions {
             override val id: String
                 get() = "vipBanner"
@@ -96,6 +101,11 @@ object Constants {
         object MinusIcon : Actions {
             override val id: String
                 get() = "minusIcon"
+
+        }
+        object Banners : Actions {
+            override val id: String
+                get() = "marketing_banner"
 
         }
     }

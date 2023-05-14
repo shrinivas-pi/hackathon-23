@@ -6,8 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -40,6 +43,7 @@ class HomeActivity : ComponentActivity() {
                     selectedText = remember { mutableStateMapOf() }
                     val uiElement: UiElement =
                         Gson().fromJson(json, object : TypeToken<UiElement>() {}.type)
+                    BuildView(element = uiElement, navController, selectedText)
                     NavHost(navController = navController, startDestination = "home") {
                         composable("home") {
                             BuildView(
@@ -48,22 +52,31 @@ class HomeActivity : ComponentActivity() {
                                 selectedText = selectedText
                             )
                         }
-                        composable(
-                            route = "datePicker/{id}",
-                            arguments = listOf(navArgument("id") {
-                                type = NavType.StringType
-                            })
-                        ) {
-                            val id = it.arguments?.getString("id") ?: ""
-                            RangeDatePicker(
-                                onClick = { selectedYear, selectedMonth, selectedDayOfMonth ->
-                                    selectedText[id] =
-                                        "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
-                                }
-                            )
-                        }
+//                        composable("locationPicker/{id}",
+//                            arguments = listOf(navArgument("id") {
+//                                type = NavType.BoolType
+//                            })) {
+//                            DropDown(expanded = true,
+//                            onClick = { selectedIndex ->
+//                                selectedIndex
+//                            },
+//                            onDismissRequest = { expanded = false },)
+//                        }
+//                        composable(
+//                            route = "datePicker/{id}",
+//                            arguments = listOf(navArgument("id") {
+//                                type = NavType.StringType
+//                            })
+//                        ) {
+//                            val id = it.arguments?.getString("id") ?: ""
+//                            RangeDatePicker(
+//                                onClick = { selectedYear, selectedMonth, selectedDayOfMonth ->
+//                                    selectedText[id] =
+//                                        "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+//                                }
+//                            )
+//                        }
                     }
-                    BuildView(element = uiElement, navController, selectedText)
                 }
             }
         }

@@ -5,15 +5,26 @@ import android.widget.DatePicker
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -30,6 +41,8 @@ import androidx.constraintlayout.compose.*
 import com.hackathon.android.dynamic_ui.ui.theme.DarkerBlue
 import com.hackathon.android.dynamic_ui.ui.theme.LightGray
 import androidx.compose.runtime.snapshots.SnapshotStateMap
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.AnnotatedString
 import androidx.navigation.NavHostController
 import java.util.*
 
@@ -44,9 +57,13 @@ fun Container(
     element: UiElement?,
     properties: ComposeProperties?,
     navController: NavHostController,
-    selectedText: SnapshotStateMap<String, String>
+    selectedText: SnapshotStateMap<String, String>,
+    onClick: (String) -> Unit,
+    onClickCalendar: (selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int) -> Unit
 ) {
     val mContext = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    var showCalendar by remember { mutableStateOf(false) }
     AppSearchField(
         modifier = modifier
             .fillMaxWidth(),
@@ -54,14 +71,20 @@ fun Container(
         color = properties?.backgroundColor ?: LightGray,
         onClick = {
             val deeplink = element?.allowedActions?.find { it?.type == "tap" }?.deeplink
-            performClick(
-                mContext,
-                properties?.isTapabble,
-                element?.id,
-                deeplink,
-                navController,
-                selectedText
-            )
+            if (element?.id == Constants.Actions.LocationPicker.id) {
+                expanded = true
+            } else if (element?.id == Constants.Actions.DatePicker.id) {
+                showCalendar = true
+            }else{
+                performClick(
+                    mContext,
+                    properties?.isTapabble,
+                    element?.id,
+                    deeplink,
+                    navController,
+                    selectedText
+                )
+            }
         },
         contentStart = {
             leftIcon?.let {
@@ -94,7 +117,8 @@ fun Container(
     ) {
         placeHolderText?.let {
             Text(
-                text = if (selectedText[element?.id]?.isEmpty() == true) it else selectedText[element?.id] ?: it,
+                text = if (selectedText[element?.id]?.isEmpty() == true) it else selectedText[element?.id]
+                    ?: it,
                 modifier = modifier,
                 color = properties?.foregroundColor ?: DarkerBlue,
                 maxLines = 1,
@@ -103,6 +127,37 @@ fun Container(
                 ),
                 fontFamily = RobotoFontFamily
             )
+        }
+        val options = listOf("Chicago, IL", "Las Vegas, NV", "San Fransisco, CA", "Orlando, FL", "Houston, TX")
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEachIndexed { index, option ->
+                DropdownMenuItem(onClick = {
+                    onClick.invoke(option)
+                    expanded = false
+                }) {
+                    Text(option)
+                }
+            }
+        }
+        val mContext = LocalContext.current
+        val calendar = Calendar.getInstance()
+
+// Fetching current year, month and day
+        val year = calendar[Calendar.YEAR]
+        val month = calendar[Calendar.MONTH]
+        val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+        val datePicker = DatePickerDialog(
+            mContext,
+            { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+                onClickCalendar.invoke(selectedYear, selectedMonth, selectedDayOfMonth)
+            }, year, month, dayOfMonth
+        )
+        if (showCalendar) {
+            datePicker.show()
+            showCalendar = false
         }
     }
 }
@@ -137,53 +192,6 @@ fun AppSearchField(
             contentEnd = contentEnd,
         )
     }
-}
-
-@Composable
-fun SearchFieldText(
-    modifier: Modifier = Modifier,
-    text: String,
-    color: Color = DarkerBlue,
-    textDecoration: TextDecoration? = null,
-    textAlign: TextAlign = TextAlign.Start,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
-    softWrap: Boolean = true,
-    maxLines: Int = 1,
-    style: TextStyle
-) {
-    Crossfade(targetState = text) {
-        AppText(
-            modifier = modifier,
-            text = it,
-            color = color,
-            textDecoration = textDecoration,
-            textAlign = textAlign,
-            overflow = overflow,
-            softWrap = softWrap,
-            maxLines = maxLines,
-            style = style
-        )
-    }
-}
-
-@Composable
-fun AppText(
-    text: String,
-    modifier: Modifier = Modifier,
-    color: Color = DarkerBlue,
-    textDecoration: TextDecoration? = null,
-    fontWeight: FontWeight? = null,
-    textAlign: TextAlign = TextAlign.Start,
-    overflow: TextOverflow = TextOverflow.Clip,
-    softWrap: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE,
-    style: TextStyle = TextStyle(
-        fontSize = 14.sp,
-        letterSpacing = 0.017_857_142_9.sp,
-        lineHeight = 18.sp
-    )
-) {
-
 }
 
 @ExperimentalMaterialApi
@@ -221,7 +229,8 @@ private fun AppSearchFieldContent(
     mainContent: @Composable () -> Unit
 ) {
     ConstraintLayout(
-        modifier = Modifier) {
+        modifier = Modifier
+    ) {
         val (
             startContentRef,
             mainContentRef,
@@ -311,24 +320,4 @@ private fun ConstraintLayoutScope.ContentEnd(
     ) {
         content()
     }
-}
-
-@Composable
-fun RangeDatePicker(
-    onClick: (selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int) -> Unit
-) {
-    val mContext = LocalContext.current
-    val calendar = Calendar.getInstance()
-
-// Fetching current year, month and day
-    val year = calendar[Calendar.YEAR]
-    val month = calendar[Calendar.MONTH]
-    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
-    val datePicker = DatePickerDialog(
-        mContext,
-        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            onClick.invoke(selectedYear, selectedMonth, selectedDayOfMonth)
-        }, year, month, dayOfMonth
-    )
-    datePicker.show()
 }

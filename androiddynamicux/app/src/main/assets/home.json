@@ -54,7 +54,7 @@
             "type": "image",
             "link": "ic_search",
             "properties": {
-              "isTapabble": true,
+              "isTapabble": false,
               "isNetworkLoadable": false,
               "size": {
                 "height": 44.0,
@@ -74,7 +74,7 @@
             "type": "image",
             "link": "ic_gps_fixed",
             "properties": {
-              "isTapabble": true,
+              "isTapabble": false,
               "isNetworkLoadable": false,
               "size": {
                 "height": 44.0,
@@ -91,7 +91,8 @@
           },
           "allowedActions": [
             {
-              "type": "tap"
+              "type": "tap",
+              "deeplink": "locationPicker"
             }
           ],
           "properties": {
@@ -123,7 +124,7 @@
             "type": "image",
             "link": "ic_calendar",
             "properties": {
-              "isTapabble": true,
+              "isTapabble": false,
               "isNetworkLoadable": false,
               "size": {
                 "height": 44.0,
@@ -248,6 +249,12 @@
           "id": "searchButton",
           "type": "button",
           "title": "Search Hotels",
+          "allowedActions": [
+            {
+              "type": "tap",
+              "deeplink": "negotiator://home"
+            }
+          ],
           "properties": {
             "isTapabble": true,
             "font": {
@@ -349,11 +356,11 @@
               "allowedActions": [
                 {
                   "type": "tap",
-                  "deeplink": "negotiator://signup"
+                  "deeplink": "https://www.priceline.com/?refclickid=&action=signup"
                 }
               ],
               "properties": {
-                "deeplink": "negotiator://signup",
+                "deeplink": "https://www.priceline.com/?refclickid=&action=signup",
                 "isTapabble": true,
                 "titleAlignment": "left",
                 "font": {
@@ -407,7 +414,7 @@
       "allowedActions": [
         {
           "type": "tap",
-          "deeplink": "negotiator://safari?url=https://experiences.priceline.com/us/new-york/empire-state-building-v"
+          "deeplink": "https://experiences.priceline.com/us/new-york/empire-state-building-v"
         }
       ],
       "children": [
@@ -453,6 +460,7 @@
         }
       ],
       "properties": {
+        "isTapabble": true,
         "interItemSpacing": 8,
         "size": {
           "width": 103,
