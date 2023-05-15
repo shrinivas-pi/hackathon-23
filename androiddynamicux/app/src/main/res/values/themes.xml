@@ -18,4 +18,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="ThemeOverlay.MyApp.Dialog" parent="@style/ThemeOverlay.MaterialComponents.Dialog">
+        <item name="colorSecondary">@color/priceline_blue</item>
+        <item name="colorPrimary">@color/dark_blue</item> <!-- button text color -->
+    </style>
 </resources>

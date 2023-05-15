@@ -151,6 +151,7 @@ fun Container(
         val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
         val datePicker = DatePickerDialog(
             mContext,
+            R.style.ThemeOverlay_MyApp_Dialog,
             { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
                 onClickCalendar.invoke(selectedYear, selectedMonth, selectedDayOfMonth)
             }, year, month, dayOfMonth

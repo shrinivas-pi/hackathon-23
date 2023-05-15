@@ -58,25 +58,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         json = getJsonDataFromAsset(context = applicationContext, fileName = "home_variant.json")
-
-        setContent {
-            AndroidDynamicUxTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-//                    val navController: NavHostController = rememberNavController()
-//                    val uiElement: UiElement =
-//                        Gson().fromJson(json, object : TypeToken<UiElement>() {}.type)
-//                    NavHost(navController = navController, startDestination = "home") {
-//                        composable("home") { BuildView(element = uiElement, navController = navController)}
-//                        composable("datePicker") { RangeDatePicker(display = true, navController = navController) }
-//                    }
-//                    BuildView(element = uiElement, navController)
-                }
-            }
-        }
     }
 }
 
@@ -471,14 +452,6 @@ fun performClick(
 ) {
     isTappable.takeIf { it == true && id != null }?.let {
         when (id) {
-            Constants.Actions.DatePicker.id -> {
-                deeplink?.let { link -> navController.navigate(route = "$link/${id}") }
-            }
-
-            Constants.Actions.LocationPicker.id -> {
-                deeplink?.let { link -> navController.navigate(route = "$link/${true}") }
-            }
-
             Constants.Actions.PlusIcon.id -> {
                 val room = selectedText[parentId]?.split(" ")?.get(0)
                 if ((room?.toInt() ?: 0) > 0) {
