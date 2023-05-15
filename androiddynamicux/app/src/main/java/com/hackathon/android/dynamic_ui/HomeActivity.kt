@@ -44,39 +44,6 @@ class HomeActivity : ComponentActivity() {
                     val uiElement: UiElement =
                         Gson().fromJson(json, object : TypeToken<UiElement>() {}.type)
                     BuildView(element = uiElement, navController, selectedText)
-                    NavHost(navController = navController, startDestination = "home") {
-                        composable("home") {
-                            BuildView(
-                                element = uiElement,
-                                navController = navController,
-                                selectedText = selectedText
-                            )
-                        }
-//                        composable("locationPicker/{id}",
-//                            arguments = listOf(navArgument("id") {
-//                                type = NavType.BoolType
-//                            })) {
-//                            DropDown(expanded = true,
-//                            onClick = { selectedIndex ->
-//                                selectedIndex
-//                            },
-//                            onDismissRequest = { expanded = false },)
-//                        }
-//                        composable(
-//                            route = "datePicker/{id}",
-//                            arguments = listOf(navArgument("id") {
-//                                type = NavType.StringType
-//                            })
-//                        ) {
-//                            val id = it.arguments?.getString("id") ?: ""
-//                            RangeDatePicker(
-//                                onClick = { selectedYear, selectedMonth, selectedDayOfMonth ->
-//                                    selectedText[id] =
-//                                        "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
-//                                }
-//                            )
-//                        }
-                    }
                 }
             }
         }

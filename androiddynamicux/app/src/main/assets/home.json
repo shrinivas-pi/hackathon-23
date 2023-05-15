@@ -436,8 +436,15 @@
         {
           "id": "logo",
           "type": "image",
+          "allowedActions": [
+            {
+              "type": "tap",
+              "deeplink": "https://experiences.priceline.com/us/new-york/empire-state-building-v"
+            }
+          ],
           "link": "https://iili.io/HU70sUP.jpg",
           "properties": {
+            "isTapabble": true,
             "isNetworkLoadable": true,
             "size": {
               "height": 100.0
